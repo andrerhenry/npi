@@ -1,3 +1,12 @@
+# Ignore jar files untill licensing confirmed
+*.jar
+
+
+
+
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
