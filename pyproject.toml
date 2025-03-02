@@ -1,0 +1,23 @@
+[project]
+name = "npi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "andrerhenry", email = "kinghenry238@gmail.com" }
+]
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools]
+packages = ["npi"]
+packages-dir = {"" = "src"}
+
+
+
+[project.scripts]
+npi = "npi.main:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
