@@ -10,3 +10,7 @@ uv venv
 source .venv/bin/active
 
 pip install --editable .
+
+Then test command the project 
+
+npi install somepackage
