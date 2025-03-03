@@ -1,6 +1,6 @@
 # Ignore jar files untill licensing confirmed
 *.jar
-
+.python-version
 
 
 
