@@ -7,7 +7,10 @@ authors = [
     { name = "andrerhenry", email = "kinghenry238@gmail.com" }
 ]
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "setuptools>=75.8.2",
+    "wheel>=0.45.1",
+]
 
 [tool.setuptools]
 packages = ["npi"]
