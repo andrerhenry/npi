@@ -1,7 +1,8 @@
 import os
 from pathlib import Path
+from collections.abc import Mapping
 
-def list_packages(*args ) -> None:
+def list_modules(*args ) -> tuple[Mapping, Path]:
 
     base_path = Path(os.getcwd()) / "mock_install"
     niagara_folder = "Niagara-4.14.0.162"
@@ -9,10 +10,12 @@ def list_packages(*args ) -> None:
 
     print("Listing installed packages for  {install} at location:")
     print(install_dir)
-    package_list = os.listdir(install_dir)
-    
-    for package in package_list:
+    module_list = os.listdir(install_dir)
+
+    for package in module_list:
         print(package)
+    return module_list, install_dir
 
 if __name__ == "__main__":
-    list_packages()
+    list_modules()
+
