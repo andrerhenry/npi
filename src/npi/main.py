@@ -1,7 +1,7 @@
 import os 
 import argparse
 
-from .list_modules import list_packages
+from .module_index import list_modules
 
 # Temp path to local dir for testing 
 global REPO_PATH
@@ -22,7 +22,7 @@ def main():
     
     parser_list = subparsers.add_parser('list')
     #parser.add_argument('list', help='list current installed pakcages')
-    parser_list.set_defaults(func=list_packages)
+    parser_list.set_defaults(func=list_modules)
     
     args = parser.parse_args()
     args.func(args)
