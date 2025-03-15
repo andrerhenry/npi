@@ -1,7 +1,8 @@
 import os 
-import argparse
+from argparse import ArgumentParser
 
 from .module_index import list_modules
+from .get_request import add_install_parser
 
 # Temp path to local dir for testing 
 global REPO_PATH
@@ -12,12 +13,13 @@ def install(args):
         
 
 def main():
-    parser = argparse.ArgumentParser(prog='npi', description='niagara package installer')
+    parser = ArgumentParser(prog='npi', description='niagara package installer')
     subparsers = parser.add_subparsers(required=False, help='subcommand help')
 
-    parser_install = subparsers.add_parser(name='install', help='list packages to be installed')
-    parser_install.add_argument('package')
-    parser_install.set_defaults(func=install)
+    # parser_install = subparsers.add_parser(name='install', help='list packages to be installed')
+    # parser_install.add_argument('package')
+    # parser_install.set_defaults(func=install)
+    install_parser = add_install_parser(subparsers)
 
     
     parser_list = subparsers.add_parser('list')
