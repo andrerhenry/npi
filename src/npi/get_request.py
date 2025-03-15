@@ -1,5 +1,5 @@
 import requests
-from argparse import _SubParsersAction
+from argparse import _SubParsersAction, ArgumentParser
 
 
 def get_request(url: str, file_path: str):
@@ -16,11 +16,19 @@ def get_request(url: str, file_path: str):
 
 
 
-def add_install_parser(subparsers: _SubParsersAction):
+def add_install_parser(subparsers: _SubParsersAction) -> _SubParsersAction:
+    """ Adds install parser action to subparsers object
+
+    Args:
+        subparsers (_SubParsersAction): Base subparser
+
+    Returns:
+        _SubParsersAction: a subarpse with added install action
+    """    
     parser_install = subparsers.add_parser(name='install', help='list packages to be installed')
     parser_install.add_argument('package_name')
     parser_install.set_defaults(func=get_request)
-    return parser_install
+
 
 
 
