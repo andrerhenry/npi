@@ -9,6 +9,7 @@ authors = [
 requires-python = ">=3.10"
 dependencies = [
     "rapidfuzz>=3.12.2",
+    "requests>=2.32.3",
     "setuptools>=75.8.2",
     "wheel>=0.45.1",
 ]
