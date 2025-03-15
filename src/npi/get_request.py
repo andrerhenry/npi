@@ -2,17 +2,28 @@ import requests
 from argparse import _SubParsersAction, ArgumentParser
 
 
-def get_request(url: str, file_path: str):
+# def get_request(url: str, file_path: str):
+#     url = 'http://18.119.133.195/public_html/testfile.txt'
+#     response = requests.get(url)
+
+#     if response.status_code == 200:
+#         with open(file_Path, 'wb') as file:
+#             file.write(response.content)
+#         print('File downloaded successfully')
+#     else:
+#         print('Failed to download file')
+
+#testing 
+def get_request(*args):
     url = 'http://18.119.133.195/public_html/testfile.txt'
     response = requests.get(url)
 
     if response.status_code == 200:
-        with open(file_Path, 'wb') as file:
+        with open('file.txt', 'wb') as file:
             file.write(response.content)
         print('File downloaded successfully')
     else:
         print('Failed to download file')
-
 
 
 
@@ -38,4 +49,4 @@ if __name__ == '__main__':
     url = 'http://18.119.133.195/public_html/testfile.txt'
     file_Path = '/tmp/testing_download.txt'
     
-    #get_request(url, file_Path)
+    get_request(url, file_Path)
