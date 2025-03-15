@@ -1,9 +1,9 @@
-
 import requests
-
+from argparse import _SubParsersAction
 
 
 def get_request(url: str, file_path: str):
+    url = 'http://18.119.133.195/public_html/testfile.txt'
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -14,8 +14,20 @@ def get_request(url: str, file_path: str):
         print('Failed to download file')
 
 
+
+
+def add_install_parser(subparsers: _SubParsersAction):
+    parser_install = subparsers.add_parser(name='install', help='list packages to be installed')
+    parser_install.add_argument('package_name')
+    parser_install.set_defaults(func=get_request)
+    return parser_install
+
+
+
+
+
 if __name__ == '__main__':
     url = 'http://18.119.133.195/public_html/testfile.txt'
     file_Path = '/tmp/testing_download.txt'
     
-    get_request(url, file_Path)
+    #get_request(url, file_Path)
