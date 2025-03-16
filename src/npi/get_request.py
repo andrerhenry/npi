@@ -1,14 +1,19 @@
 import requests
 from pathlib import Path
-from argparse import _SubParsersAction, ArgumentParser
+from argparse import _SubParsersAction, Namespace
 
+from .main import MainNamespace
 
+class InstallNamespace(Namespace):
+    niaagara_version: str
+    package_name: str
 
 #testing 
-def get_request(*args):
+def get_request(args: MainNamespace):
     repo_url = Path('http://18.119.133.195/')
     url = 'http://18.119.133.195/public_html/testfile.txt'
     response = requests.get(url)
+    args.package_name
 
     if response.status_code == 200:
         with open('file.txt', 'wb') as file:

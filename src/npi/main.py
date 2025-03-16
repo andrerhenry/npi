@@ -2,7 +2,7 @@ import os
 from argparse import ArgumentParser
 
 from .module_index import list_modules
-from .get_request import add_install_parser
+from .get_request import add_install_parser, InstallNamespace
 
 # Temp path to local dir for testing 
 global REPO_PATH
@@ -10,6 +10,8 @@ global REPO_PATH
 def install(args):
     print(f"looking for {args.package}")
 
+class MainNamespace(InstallNamespace):
+    pass
         
 
 def main():
