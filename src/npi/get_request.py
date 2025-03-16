@@ -1,20 +1,12 @@
 import requests
+from pathlib import Path
 from argparse import _SubParsersAction, ArgumentParser
 
 
-# def get_request(url: str, file_path: str):
-#     url = 'http://18.119.133.195/public_html/testfile.txt'
-#     response = requests.get(url)
-
-#     if response.status_code == 200:
-#         with open(file_Path, 'wb') as file:
-#             file.write(response.content)
-#         print('File downloaded successfully')
-#     else:
-#         print('Failed to download file')
 
 #testing 
 def get_request(*args):
+    repo_url = Path('http://18.119.133.195/')
     url = 'http://18.119.133.195/public_html/testfile.txt'
     response = requests.get(url)
 
@@ -37,16 +29,19 @@ def add_install_parser(subparsers: _SubParsersAction) -> _SubParsersAction:
         _SubParsersAction: a subarpse with added install action
     """    
     parser_install = subparsers.add_parser(name='install', help='list packages to be installed')
+    parser_install.add_argument('niagara_version')
     parser_install.add_argument('package_name')
     parser_install.set_defaults(func=get_request)
 
 
 
-
-
-
 if __name__ == '__main__':
-    url = 'http://18.119.133.195/public_html/testfile.txt'
-    file_Path = '/tmp/testing_download.txt'
+    # testing veriables 
+    repo_url = Path('http://18.119.133.195/')
+    folder_name = 'public_html'
+    file_name = 'testfile.txt'
+    url = repo_url.joinpath(folder_name,file_name)
     
-    get_request(url, file_Path)
+    print(url)
+    
+    #get_request((repo_url + folder_name),)
