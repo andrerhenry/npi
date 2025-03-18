@@ -25,17 +25,17 @@ def get_request(args: InstallNamespace):
 
 
 def add_install_parser(subparsers: _SubParsersAction) -> ArgumentParser:
-    """ Adds install parser action to subparsers object
+    """ Adds package install parser action to subparsers object
 
     Args:
         subparsers (_SubParsersAction): Base subparser
 
     Returns:
-        _SubParsersAction: a subarpse with added install action
+        ArgumentParser: adds subarpse with added install actions
     """    
     parser_install = subparsers.add_parser(name='install', help='list packages to be installed')
-    parser_install.add_argument('--niagara_version', type=str)
-    parser_install.add_argument('package_name', type=str)
+    parser_install.add_argument('--niagara-version', type=str)
+    parser_install.add_argument('packag-name', type=str)
     parser_install.set_defaults(func=get_request)
 
 
