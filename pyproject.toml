@@ -8,15 +8,20 @@ authors = [
 ]
 requires-python = ">=3.10"
 dependencies = [
+    "matplotlib>=3.10.1",
     "rapidfuzz>=3.12.2",
     "requests>=2.32.3",
     "setuptools>=75.8.2",
     "wheel>=0.45.1",
+    "yarl>=1.18.3",
 ]
 
 [tool.setuptools]
 packages = ["npi"]
 packages-dir = {"" = "src"}
+
+[tool.uv.sources]
+npi = { workspace = true }
 
 
 
@@ -26,3 +31,8 @@ npi = "npi.main:main"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "npi",
+]
