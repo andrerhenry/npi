@@ -1,6 +1,7 @@
 import requests
 from pathlib import Path
 from argparse import _SubParsersAction, ArgumentParser, Namespace
+from yarl import URL
 
 class InstallNamespace(Namespace):
     niagara_version: str
@@ -8,7 +9,7 @@ class InstallNamespace(Namespace):
 
 
 def get_request(args: InstallNamespace):
-    repo_url = Path('http://18.119.133.195/niagara/')
+    repo_url = URL('http://18.119.133.195/niagara/')
     folder_name = args.niagara_version
     file_name = args.package_name
 
@@ -41,7 +42,7 @@ def add_install_parser(subparsers: _SubParsersAction) -> ArgumentParser:
 
 if __name__ == '__main__':
     # testing veriables 
-    repo_url = Path('http://18.119.133.195/')
+    repo_url = URL('http://18.119.133.195/')
     folder_name = 'public_html'
     file_name = 'testfile.txt'
     #url = repo_url.joinpath(folder_name,file_name)
