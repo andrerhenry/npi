@@ -9,6 +9,11 @@ class InstallNamespace(Namespace):
 
 
 def get_request(args: InstallNamespace):
+    """Installed the deisgnated package from the repoistory
+
+    Args:
+        args (InstallNamespace): Contians the package name and version
+    """    
     repo_url = URL('http://18.119.133.195/niagara/')
     folder_name = args.niagara_version
     file_name = args.package_name
