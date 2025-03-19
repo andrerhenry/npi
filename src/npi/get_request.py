@@ -40,7 +40,7 @@ def add_install_parser(subparsers: _SubParsersAction) -> ArgumentParser:
     """    
     parser_install = subparsers.add_parser(name='install', help='list packages to be installed')
     parser_install.add_argument('--niagara-version', type=str)
-    parser_install.add_argument('packag-name', type=str)
+    parser_install.add_argument('package_name', type=str)
     parser_install.set_defaults(func=get_request)
 
 
