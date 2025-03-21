@@ -3,9 +3,17 @@ from pathlib import Path
 from typing import NamedTuple
 from dataclasses import dataclass
 
+
 class Version(NamedTuple):
+    """A Class holding current niagara major and minor version
+
+    Attributes:
+        major_version (int): Major version number
+        minor_version (int): minor version number
+    """    
     major_version: int
     minor_version: int
+
 
 @dataclass
 class NiagaraVersion:
@@ -23,10 +31,14 @@ class NiagaraVersion:
     patch_version: int
 
 
-
 def check_niagara_version() -> Version | None:
+    """Checks the niagara version information and returns major and minor version. 
+
+
+    Returns:
+        Version | None: Returns major minor version numbers, and None if there is an error 
+    """    
     parent_dir = Path(os.getcwd()).name
-    print(f'parent dir: {parent_dir}')
 
     if parent_dir == 'bin' or parent_dir == 'modules':
         niagara_distro = (Path(os.getcwd()).parent).name
@@ -39,10 +51,9 @@ def check_niagara_version() -> Version | None:
         print("Niagara version not recongized.")
         print('Use commeands {} {} to force install')
         return
-    version_info_parsed = check_version(niagara_distro)
-    return Version(version_info_parsed.major_version, version_info_parsed.minor_version)
-
-
+    version_info = check_version(niagara_distro)
+    print(f'distributor: {version_info.distributor}, version:{version_info.major_version}.{version_info.minor_version}')
+    return Version(version_info.major_version, version_info.minor_version)
 
 
 def check_version(niagara_distro:str) -> NiagaraVersion:
@@ -62,4 +73,3 @@ def check_version(niagara_distro:str) -> NiagaraVersion:
     patch_version = version.split('.')[2]
     return NiagaraVersion(distributor, major_version, minor_version, patch_version)
 
-print(check_niagara_version())
