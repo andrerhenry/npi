@@ -4,7 +4,7 @@ from collections import namedtuple
 from dataclasses import dataclass
 
 @dataclass
-class NagaraVersion:
+class NiagaraVersion:
     distibutor: str
     major_version: int
     minor_version: int
@@ -25,11 +25,11 @@ def check_niagara_version():
 
 def check_version(niagara_distro:str):
     distributor = niagara_distro.split('-')[0]
-    niagara_version = niagara_distro.split('-')[1]
-    major_version = niagara_version.split('.')[0]
-    minor_version = niagara_version.split('.')[1]
-    patch_version = niagara_version.split('.')[2]
-    return NagaraVersion(distributor, major_version, minor_version, patch_version)
+    version = niagara_distro.split('-')[1]
+    major_version = version.split('.')[0]
+    minor_version = version.split('.')[1]
+    patch_version = version.split('.')[2]
+    return NiagaraVersion(distributor, major_version, minor_version, patch_version)
 
 
 check_niagara_version()
