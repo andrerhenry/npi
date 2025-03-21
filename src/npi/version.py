@@ -1,4 +1,5 @@
 import os 
+from argparse import ArgumentParser, _SubParsersAction
 from pathlib import Path
 from typing import NamedTuple
 from dataclasses import dataclass
@@ -73,3 +74,15 @@ def check_version(niagara_distro:str) -> NiagaraVersion:
     patch_version = version.split('.')[2]
     return NiagaraVersion(distributor, major_version, minor_version, patch_version)
 
+
+def add_version_parser(subparsers: _SubParsersAction) -> ArgumentParser:
+    """Addes command to show the current version of niagara detected
+
+    Args:
+        subparsers (_SubParsersAction): Base subparser
+
+    Returns:
+        ArgumentParser: subparser with version subparser
+    """
+    version_parser = subparsers.add_parser(name='version', help='Shows the current version of niagara detectd')
+    version_parser.set_defaults(func=check_niagara_version)
