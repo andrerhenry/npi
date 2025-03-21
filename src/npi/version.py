@@ -32,9 +32,11 @@ class NiagaraVersion:
     patch_version: int
 
 
-def check_niagara_version() -> Version | None:
+def check_niagara_version(args) -> Version | None:
     """Checks the niagara version information and returns major and minor version. 
 
+    Args:
+        args (argparse.Namespace)): Parsed command-line arguments (unused).
 
     Returns:
         Version | None: Returns major minor version numbers, and None if there is an error 
@@ -43,7 +45,6 @@ def check_niagara_version() -> Version | None:
 
     if parent_dir == 'bin' or parent_dir == 'modules':
         niagara_distro = (Path(os.getcwd()).parent).name
-        print(f'niagara distribution: {niagara_distro}')
         check_version(niagara_distro)
     elif '-' in parent_dir and '.' in parent_dir:
         niagara_distro = parent_dir
@@ -53,7 +54,7 @@ def check_niagara_version() -> Version | None:
         print('Use commeands {} {} to force install')
         return
     version_info = check_version(niagara_distro)
-    print(f'distributor: {version_info.distributor}, version:{version_info.major_version}.{version_info.minor_version}')
+    print(f'Distributor: {version_info.distributor}, Version: {version_info.major_version}.{version_info.minor_version}')
     return Version(version_info.major_version, version_info.minor_version)
 
 
