@@ -1,9 +1,11 @@
 import os 
 from pathlib import Path
-from collections import namedtuple
+from typing import NamedTuple
 from dataclasses import dataclass
 
-version = namedtuple('version', ['major_version', 'minor_verison'])
+class Version(NamedTuple):
+    major_version: int
+    minor_version: int
 
 @dataclass
 class NiagaraVersion:
@@ -22,7 +24,7 @@ class NiagaraVersion:
 
 
 
-def check_niagara_version() -> version | None:
+def check_niagara_version() -> Version | None:
     parent_dir = Path(os.getcwd()).name
     print(f'parent dir: {parent_dir}')
 
@@ -38,7 +40,7 @@ def check_niagara_version() -> version | None:
         print('Use commeands {} {} to force install')
         return
     version_info_parsed = check_version(niagara_distro)
-    return version(version_info_parsed.major_version, version_info_parsed.minor_version)
+    return Version(version_info_parsed.major_version, version_info_parsed.minor_version)
 
 
 
@@ -60,4 +62,4 @@ def check_version(niagara_distro:str) -> NiagaraVersion:
     patch_version = version.split('.')[2]
     return NiagaraVersion(distributor, major_version, minor_version, patch_version)
 
-check_niagara_version()
+print(check_niagara_version())
