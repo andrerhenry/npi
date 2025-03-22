@@ -72,7 +72,7 @@ def add_list_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
     Returns:
         ArgumentParser: subparser with list subparser
     """
-    parser_list = subparsers.add_parser('list')
+    parser_list = subparsers.add_parser('list', help='lists the current installed modules')
     parser_list.set_defaults(func=list_modules)
     
 
