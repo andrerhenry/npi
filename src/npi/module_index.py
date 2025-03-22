@@ -6,13 +6,27 @@ from rapidfuzz import fuzz, process
 
 
 def get_install_dir() -> Path:
+    """Return the return installation directory releitivly from the currenty path
+
+    Returns:
+        Path: instaallation directory
+    """    
+    # temp func? move to version module?
     base_path = Path(os.getcwd()) / "mock_install"
     niagara_folder = "Niagara-4.14.0.162"
     install_dir = base_path / niagara_folder / "modules"
     return install_dir
 
 
-def list_modules(*args ) -> Mapping:
+def list_modules(args ) -> Mapping:
+    """Returns and prints the modules installed
+
+    Args:
+        args (argparse.Namespace)): Parsed command-line arguments (unused)
+
+    Returns:
+        Mapping: List of modules installed
+    """    
     install_dir = get_install_dir()
     module_list = os.listdir(install_dir)
 
@@ -26,11 +40,20 @@ def list_modules(*args ) -> Mapping:
 
 
 def find_module(module_name: str) -> bool:
+    """Finds the closed named module 
+
+    Args:
+        module_name (str): moudle to be installed
+
+    Returns:
+        bool: if the module is found
+    """    
     install_dir = get_install_dir()
     module_list = os.listdir(install_dir)
 
     # Look in to droping file extention in index/search
     search_results = process.extractOne(module_name, module_list, scorer=fuzz.ratio)
+    # check should be index [0]?
     print(search_results[1])
     if module_name in module_list:
         print(f"Module: {module_name} found")
