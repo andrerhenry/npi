@@ -1,4 +1,5 @@
 import os
+from argparse import _SubParsersAction, ArgumentParser
 from pathlib import Path
 from collections.abc import Mapping
 
@@ -18,7 +19,7 @@ def get_install_dir() -> Path:
     return install_dir
 
 
-def list_modules(args ) -> Mapping:
+def list_modules(args) -> Mapping:
     """Returns and prints the modules installed
 
     Args:
@@ -59,8 +60,21 @@ def find_module(module_name: str) -> bool:
         print(f"Module: {module_name} found")
     elif search_results[1] >= 80:
         print(f"Closet module is {search_results[0]}")
-    return  True
+    return True
 
+
+def add_list_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
+    """Lists the installed modules
+
+    Args:
+        subparsers (_SubParsersAction): Base subparser
+
+    Returns:
+        ArgumentParser: subparser with list subparser
+    """
+    parser_list = subparsers.add_parser('list')
+    parser_list.set_defaults(func=list_modules)
+    
 
 if __name__ == "__main__":
     # Lines to test module 

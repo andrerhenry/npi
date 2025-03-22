@@ -1,7 +1,7 @@
 import os 
 from argparse import ArgumentParser
 
-from .module_index import list_modules
+from .module_index import add_list_parsers
 from .get_request import add_install_parser, InstallNamespace
 from .version import add_version_parser
 
@@ -16,11 +16,8 @@ def main():
 
     install_parser = add_install_parser(subparsers)
     version_parser = add_version_parser(subparsers)
+    list_parser = add_list_parsers(subparsers)
 
-    
-    parser_list = subparsers.add_parser('list')
-    parser_list.set_defaults(func=list_modules)
-    
     args = parser.parse_args()
     args.func(args)
 
