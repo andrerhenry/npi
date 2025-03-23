@@ -5,6 +5,8 @@ from collections.abc import Mapping
 
 from rapidfuzz import fuzz, process
 
+from .version import get_niagara_path
+
 
 def get_install_dir() -> Path:
     """Return the return installation directory releitivly from the currenty path
@@ -20,17 +22,21 @@ def get_install_dir() -> Path:
 
 
 def list_modules(args) -> Mapping:
-    """Returns and prints the modules installed
+    """Returns and prints the modules installed.
 
     Args:
-        args (argparse.Namespace)): Parsed command-line arguments (unused)
+        args (argparse.Namespace)): Parsed command-line arguments (unused).
 
     Returns:
-        Mapping: List of modules installed
+        Mapping: List of modules installed.
     """    
-    install_dir = get_install_dir()
+    if not (niagara_path := get_niagara_path()):
+        #TODO error
+        print('Modules folder not recognised.')
+        return
+    
+    install_dir = niagara_path/'modules'
     module_list = os.listdir(install_dir)
-
     print("Listing installed packages for {install} at location:")
     print(install_dir)
 
