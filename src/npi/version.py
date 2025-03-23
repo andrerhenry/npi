@@ -63,6 +63,7 @@ def get_niagara_version(args) -> Version | None:
 
     if (niagara_distro := get_niagara_path().name):
         version_info = check_version(niagara_distro)
+        # TEMP for debug
         print(f'Distributor: {version_info.distributor}, Version: {version_info.major_version}.{version_info.minor_version}')
         return Version(version_info.major_version, version_info.minor_version)
     else: return None
@@ -77,8 +78,8 @@ def check_version(niagara_distro:str) -> NiagaraVersion:
     Returns:
         NiagaraVersion: Data class contianing the distributor and version numbers.
     """    
-    distributor = niagara_distro.split('-')[0]
-    version = niagara_distro.split('-')[1]
+    version = niagara_distro.split('-')[-1]
+    distributor = niagara_distro.replace('-' + version, '')
     # add error catching to make sure sure versino information is parsed correctly?
     major_version = version.split('.')[0]
     minor_version = version.split('.')[1]
