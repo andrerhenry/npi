@@ -55,17 +55,20 @@ def find_module(module_name: str) -> bool:
     Returns:
         bool: if the module is found
     """    
-    install_dir = get_install_dir()
+    # TODO change to search at server. serach with API request?
+    install_dir = get_niagara_path()/'modules'
     module_list = os.listdir(install_dir)
 
     # Look in to droping file extention in index/search
     search_results = process.extractOne(module_name, module_list, scorer=fuzz.ratio)
-    # check should be index [0]?
-    print(search_results[1])
     if module_name in module_list:
         print(f"Module: {module_name} found")
-    elif search_results[1] >= 80:
+    #about 10 points for not include the file extention. rework to factor extention
+    elif search_results[1] >= 75:
         print(f"Closet module is {search_results[0]}")
+    else:
+        print('Module not found.')
+        return
     return True
 
 
