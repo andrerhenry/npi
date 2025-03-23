@@ -32,6 +32,24 @@ class NiagaraVersion:
     patch_version: int
 
 
+def get_niagara_path() -> Path:
+    """Gets the Path to root directory of the niagara installation
+
+    Returns:
+        Path: Path to niaagara root directory
+    """    
+    parent_dir = Path(os.getcwd()).name
+
+    if parent_dir == 'bin' or parent_dir == 'modules':
+        niagara_path = (Path(os.getcwd()).parent)
+    elif '-' in parent_dir and '.' in parent_dir:
+        niagara_path = Path(os.getcwd())
+    else:
+        print('Niagara version not recongized.')
+        return
+    return niagara_path
+
+
 def check_niagara_version(args) -> Version | None:
     """Checks the niagara version information and returns major and minor version. 
 
