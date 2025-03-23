@@ -2,11 +2,14 @@ import os
 from argparse import _SubParsersAction, ArgumentParser
 from pathlib import Path
 from collections.abc import Mapping
+from typing import NamedTuple
 
 from rapidfuzz import fuzz, process
 
 from .version import get_niagara_path
 
+class PackageName(NamedTuple):
+    package_name:str
 
 def get_install_dir() -> Path:
     """Return the return installation directory releitivly from the currenty path
@@ -46,11 +49,11 @@ def list_modules(args) -> Mapping:
     return module_list
 
 
-def find_module(module_name: str) -> bool:
-    """Finds the closed named module 
+def find_module(args: PackageName) -> bool:
+    """Finds the closet named module.
 
     Args:
-        module_name (str): moudle to be installed
+        module_name (str): Package name to search.
 
     Returns:
         bool: if the module is found
@@ -60,9 +63,9 @@ def find_module(module_name: str) -> bool:
     module_list = os.listdir(install_dir)
 
     # Look in to droping file extention in index/search
-    search_results = process.extractOne(module_name, module_list, scorer=fuzz.ratio)
-    if module_name in module_list:
-        print(f"Module: {module_name} found")
+    search_results = process.extractOne(args.package_name, module_list, scorer=fuzz.ratio)
+    if args.package_name in module_list:
+        print(f"Module: {args.package_name} found")
     #about 10 points for not include the file extention. rework to factor extention
     elif search_results[1] >= 75:
         print(f"Closet module is {search_results[0]}")
@@ -84,9 +87,16 @@ def add_list_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
     parser_list = subparsers.add_parser('list', help='lists the current installed modules')
     parser_list.set_defaults(func=list_modules)
     
+def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
+    """Search for the module specified. 
 
-if __name__ == "__main__":
-    # Lines to test module 
-    list_modules()
-    find_module("somemodule2")
+    Args:
+        subparsers (_SubParsersAction): Base subparser
+
+    Returns:
+        ArgumentParser: subparser with search subparser
+    """
+    parser_list = subparsers.add_parser('search', help='Search for the module specified.')
+    parser_list.add_argument('package_name', type=str)
+    parser_list.set_defaults(func=find_module)
 
