@@ -33,10 +33,10 @@ class NiagaraVersion:
 
 
 def get_niagara_path() -> Path | None:
-    """Gets the Path to root directory of the niagara installation
+    """Gets the Path to root directory of the niagara installation.
 
     Returns:
-        Path | None: Path to niagara root directory, or None if dir is not recognised
+        Path | None: Path to niagara root directory, or None if dir is not recognised.
     """    
     parent_dir = Path(os.getcwd()).name
 
@@ -47,7 +47,7 @@ def get_niagara_path() -> Path | None:
     else:
         # TODO: instert error here
         print('Niagara version not recongized.')
-        return
+        return None
     return niagara_path
 
 
@@ -69,13 +69,13 @@ def get_niagara_version(args) -> Version | None:
 
 
 def check_version(niagara_distro:str) -> NiagaraVersion:
-    """Returns the distributor and version of the niagara distribution
+    """Returns the distributor and version of the niagara distribution.
 
     Args:
-        niagara_distro (str): File string of the folder containing the niagara distrobution
+        niagara_distro (str): File string of the folder containing the niagara distrobution.
 
     Returns:
-        NiagaraVersion: Data class contianing the distributor and version numbers
+        NiagaraVersion: Data class contianing the distributor and version numbers.
     """    
     distributor = niagara_distro.split('-')[0]
     version = niagara_distro.split('-')[1]
@@ -87,13 +87,13 @@ def check_version(niagara_distro:str) -> NiagaraVersion:
 
 
 def add_version_parser(subparsers: _SubParsersAction) -> ArgumentParser:
-    """Addes command to show the current version of niagara detected
+    """Addes command to show the current version of niagara detected.
 
     Args:
-        subparsers (_SubParsersAction): Base subparser
+        subparsers (_SubParsersAction): Base subparser to be modified.
 
     Returns:
-        ArgumentParser: subparser with version subparser
+        ArgumentParser: Subparser with version subparser added.
     """
     version_parser = subparsers.add_parser(name='version', help='Shows the current version of niagara detectd')
     version_parser.set_defaults(func=get_niagara_version)
