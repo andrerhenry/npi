@@ -32,11 +32,11 @@ class NiagaraVersion:
     patch_version: int
 
 
-def get_niagara_path() -> Path:
+def get_niagara_path() -> Path | None:
     """Gets the Path to root directory of the niagara installation
 
     Returns:
-        Path: Path to niaagara root directory
+        Path | None: Path to niagara root directory, or None if dir is not recognised
     """    
     parent_dir = Path(os.getcwd()).name
 
@@ -45,35 +45,27 @@ def get_niagara_path() -> Path:
     elif '-' in parent_dir and '.' in parent_dir:
         niagara_path = Path(os.getcwd())
     else:
+        # TODO: instert error here
         print('Niagara version not recongized.')
         return
     return niagara_path
 
 
-def check_niagara_version(args) -> Version | None:
+def get_niagara_version(args) -> Version | None:
     """Checks the niagara version information and returns major and minor version. 
 
     Args:
         args (argparse.Namespace)): Parsed command-line arguments (unused).
 
     Returns:
-        Version | None: Returns major minor version numbers, and None if there is an error 
-    """    
-    parent_dir = Path(os.getcwd()).name
+        Version | None: Returns major minor version numbers, and None if path is not recognised.
+    """ 
 
-    if parent_dir == 'bin' or parent_dir == 'modules':
-        niagara_distro = (Path(os.getcwd()).parent).name
-        check_version(niagara_distro)
-    elif '-' in parent_dir and '.' in parent_dir:
-        niagara_distro = parent_dir
-        check_version(parent_dir)
-    else:
-        print("Niagara version not recongized.")
-        print('Use commeands {} {} to force install')
-        return
-    version_info = check_version(niagara_distro)
-    print(f'Distributor: {version_info.distributor}, Version: {version_info.major_version}.{version_info.minor_version}')
-    return Version(version_info.major_version, version_info.minor_version)
+    if (niagara_distro := get_niagara_path().name):
+        version_info = check_version(niagara_distro)
+        print(f'Distributor: {version_info.distributor}, Version: {version_info.major_version}.{version_info.minor_version}')
+        return Version(version_info.major_version, version_info.minor_version)
+    else: return None
 
 
 def check_version(niagara_distro:str) -> NiagaraVersion:
@@ -104,4 +96,4 @@ def add_version_parser(subparsers: _SubParsersAction) -> ArgumentParser:
         ArgumentParser: subparser with version subparser
     """
     version_parser = subparsers.add_parser(name='version', help='Shows the current version of niagara detectd')
-    version_parser.set_defaults(func=check_niagara_version)
+    version_parser.set_defaults(func=get_niagara_version)
