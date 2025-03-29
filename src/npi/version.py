@@ -51,7 +51,7 @@ def get_niagara_path() -> Path | None:
     return niagara_path
 
 
-def get_niagara_version(args) -> Version | None:
+def get_niagara_version(args = None) -> Version | None:
     """Checks the niagara version information and returns major and minor version. 
 
     Args:
