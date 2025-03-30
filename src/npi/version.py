@@ -1,20 +1,7 @@
 import os 
 from argparse import ArgumentParser, _SubParsersAction
 from pathlib import Path
-from typing import NamedTuple
 from dataclasses import dataclass
-
-
-class Version(NamedTuple):
-    # Possible not neeed, remove in future?
-    """A Class holding current niagara major and minor version
-
-    Attributes:
-        major_version (int): Major version number
-        minor_version (int): minor version number
-    """    
-    major_version: int
-    minor_version: int
 
 
 @dataclass
