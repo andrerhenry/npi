@@ -1,8 +1,10 @@
 import os 
+import logging
 from argparse import ArgumentParser, _SubParsersAction
 from pathlib import Path
 from dataclasses import dataclass
 
+logger = logging.getLogger(__name__)
 
 @dataclass
 class NiagaraVersion:
@@ -54,6 +56,7 @@ def get_niagara_version(args = None) -> NiagaraVersion | None:
         version_info = check_version(niagara_distro)
         
         # TEMP for debug
+        logger.debug('Distributor: %s, Version: %s.%s', version_info.distributor, version_info.major_version, version_info.minor_version)
         print(f'Distributor: {version_info.distributor}, Version: {version_info.major_version}.{version_info.minor_version}')
         #return Version(version_info.major_version, version_info.minor_version)
         return version_info

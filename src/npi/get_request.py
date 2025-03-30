@@ -1,9 +1,12 @@
 import requests
+import logging
 from dataclasses import dataclass
 from argparse import _SubParsersAction, ArgumentParser
 from yarl import URL
 
 from .version import get_niagara_version
+
+logger = logging.getLogger(__name__)
 
 @dataclass
 class InstallArgs:
@@ -28,17 +31,14 @@ def install_package(args: InstallArgs):
 
     if args.niagara_version:
         version = args.niagara_version
-        # Debug
-        print(f'Debug: from --niagara-version version: {version}')
+        logger.debug('From --nagara-version %s', version)
     else:
         version_info = get_niagara_version()
         version = version_info.major_version + '.' +version_info.minor_version
-        # Debug
-        print(f'Debug: from get_niagara_version version: {version}')
+        logger.debug('From get_niagara_version %s', version)
     folder_name = version
     
-    # Debug line
-    print(repo_url/folder_name/file_name)
+    logging.debug('URL with args: %s', (repo_url/folder_name/file_name))
 
     response = requests.get(repo_url/folder_name/file_name)
     if response.status_code == 200:

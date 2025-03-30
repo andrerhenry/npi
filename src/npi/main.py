@@ -1,5 +1,10 @@
 import os 
 from argparse import ArgumentParser
+import logging
+
+logger = logging.getLogger(__name__)
+logging.basicConfig(level=logging.DEBUG)
+logger.info('LoggingStarted')
 
 from .module_index import add_list_parsers, add_search_parsers
 from .get_request import add_install_parser, InstallArgs
