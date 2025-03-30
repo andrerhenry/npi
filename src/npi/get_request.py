@@ -1,7 +1,6 @@
 import requests
-from pathlib import Path
 from dataclasses import dataclass
-from argparse import _SubParsersAction, ArgumentParser, Namespace
+from argparse import _SubParsersAction, ArgumentParser
 from yarl import URL
 
 from .version import get_niagara_version
@@ -18,8 +17,8 @@ class InstallArgs:
     niagara_version: str
 
 
-def get_request(args: InstallArgs):
-    """Installed the deisgnated package from the repoistory
+def install_package(args: InstallArgs):
+    """Installed the specified package from the repoistory
 
     Args:
         args (InstallArgs): Contians the argument namespace for the install parser.
@@ -63,24 +62,4 @@ def add_install_parser(subparsers: _SubParsersAction) -> ArgumentParser:
     parser_install = subparsers.add_parser(name='install', help='list packages to be installed')
     parser_install.add_argument('--niagara-version', type=str)
     parser_install.add_argument('package_name', type=str)
-    parser_install.set_defaults(func=get_request)
-
-
-
-if __name__ == '__main__':
-    # testing veriables 
-    repo_url = URL('http://18.119.133.195/')
-    folder_name = 'public_html'
-    file_name = 'testfile.txt'
-    #url = repo_url.joinpath(folder_name,file_name)
-    print(repo_url/folder_name/file_name)
-    print(type(repo_url/folder_name/file_name))
-    
-    print(repo_url.__str__)
-
-    response = requests.get(repo_url/folder_name/file_name)
-    if response.status_code == 200:
-        with open(file_name, 'wb') as file:
-            file.write(response.content)
-        print('File downloaded successfully')
-    #get_request((repo_url + folder_name),)
+    parser_install.set_defaults(func=install_package)
