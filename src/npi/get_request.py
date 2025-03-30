@@ -25,14 +25,19 @@ def get_request(args: InstallArgs):
         args (InstallArgs): Contians the argument namespace for the install parser.
     """    
     repo_url = URL('http://18.119.133.195/niagara/')
-    
-    version = get_niagara_version()
-    print(args)
-    folder_name = version.major_version + '.' + version.minor_version
-    
-    #folder_name = args.niagara_version
     file_name = args.package_name
 
+    if args.niagara_version:
+        version = args.niagara_version
+        # Debug
+        print(f'Debug: from --niagara-version version: {version}')
+    else:
+        version_info = get_niagara_version()
+        version = version_info.major_version + '.' +version_info.minor_version
+        # Debug
+        print(f'Debug: from get_niagara_version version: {version}')
+    folder_name = version
+    
     # Debug line
     print(repo_url/folder_name/file_name)
 
@@ -40,9 +45,9 @@ def get_request(args: InstallArgs):
     if response.status_code == 200:
         with open(file_name, 'wb') as file:
             file.write(response.content)
-        print('File downloaded successfully')
+        print(f'Successfully installed {args.package_name}')
     else:
-        print('Failed to download file')
+        print(f'Failed to download file: {response.status_code}')
 
 
 
