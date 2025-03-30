@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 
 class Version(NamedTuple):
+    # Possible not neeed, remove in future?
     """A Class holding current niagara major and minor version
 
     Attributes:
@@ -51,22 +52,27 @@ def get_niagara_path() -> Path | None:
     return niagara_path
 
 
-def get_niagara_version(args = None) -> Version | None:
+def get_niagara_version(args = None) -> NiagaraVersion | None:
     """Checks the niagara version information and returns major and minor version. 
 
     Args:
         args (argparse.Namespace)): Parsed command-line arguments (unused).
 
     Returns:
-        Version | None: Returns major minor version numbers, and None if path is not recognised.
+        NiagaraVersion | None: Returns NiagaraVersion class containing version infromation,
+         and None if path is not recognised.
     """ 
-
-    if (niagara_distro := get_niagara_path().name):
+    niagara_distro = get_niagara_path().name
+    if niagara_distro:
         version_info = check_version(niagara_distro)
+        
         # TEMP for debug
         print(f'Distributor: {version_info.distributor}, Version: {version_info.major_version}.{version_info.minor_version}')
-        return Version(version_info.major_version, version_info.minor_version)
-    else: return None
+        #return Version(version_info.major_version, version_info.minor_version)
+        return version_info
+    else: 
+        # TODO: Raise execption here or in previsous func instead of returning None.
+        return None
 
 
 def check_version(niagara_distro:str) -> NiagaraVersion:
