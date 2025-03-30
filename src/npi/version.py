@@ -92,5 +92,5 @@ def add_version_parser(subparsers: _SubParsersAction) -> ArgumentParser:
     Returns:
         ArgumentParser: Subparser with version subparser added.
     """
-    version_parser = subparsers.add_parser(name='version', help='Shows the current version of niagara detectd')
+    version_parser = subparsers.add_parser(name='version', help='Shows the current version of niagara detected')
     version_parser.set_defaults(func=get_niagara_version)

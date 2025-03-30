@@ -84,7 +84,7 @@ def add_list_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
     Returns:
         ArgumentParser: subparser with list subparser
     """
-    parser_list = subparsers.add_parser('list', help='lists the current installed modules')
+    parser_list = subparsers.add_parser('list', help='Lists the current installed modules')
     parser_list.set_defaults(func=list_modules)
     
 def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
@@ -96,7 +96,7 @@ def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
     Returns:
         ArgumentParser: subparser with search subparser
     """
-    parser_list = subparsers.add_parser('search', help='Search for the module specified.')
+    parser_list = subparsers.add_parser('search', help='Search for the module specified')
     parser_list.add_argument('package_name', type=str)
     parser_list.set_defaults(func=find_module)
 
