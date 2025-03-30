@@ -1,22 +1,31 @@
 import requests
 from pathlib import Path
+from dataclasses import dataclass
 from argparse import _SubParsersAction, ArgumentParser, Namespace
 from yarl import URL
 
 from .version import get_niagara_version
 
-class InstallNamespace(Namespace):
-    niagara_version: str
+@dataclass
+class InstallArgs:
+    """A class holding the passed arguments passed from the install parser
+    
+    Attributes:
+        package_name (str): Name of package to be installed
+        niagara_version (str): Optional argument 
+    """
     package_name: str
+    niagara_version: str
 
 
-def get_request(args: InstallNamespace):
+def get_request(args: InstallArgs):
     """Installed the deisgnated package from the repoistory
 
     Args:
-        args (InstallNamespace): Contians the package name and version
+        args (InstallArgs): Contians the argument namespace for the install parser.
     """    
     repo_url = URL('http://18.119.133.195/niagara/')
+    
     version = get_niagara_version()
     print(args)
     folder_name = version.major_version + '.' + version.minor_version

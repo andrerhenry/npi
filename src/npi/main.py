@@ -2,7 +2,7 @@ import os
 from argparse import ArgumentParser
 
 from .module_index import add_list_parsers, add_search_parsers
-from .get_request import add_install_parser, InstallNamespace
+from .get_request import add_install_parser, InstallArgs
 from .version import add_version_parser
 
 # Temp path to local dir for testing 
