@@ -16,8 +16,10 @@ global REPO_PATH
 
 
 def main():
-    parser = ArgumentParser(prog='npi', description='niagara package installer')
-    subparsers = parser.add_subparsers(required=False, help='subcommand help')
+    parser = ArgumentParser(prog='npi', 
+                            description='Niagara package installer helps you install and manage '
+                            'Niagara packages.')
+    subparsers = parser.add_subparsers(title='subcommands', dest='subcommands', metavar='', required=False)
 
     install_parser = add_install_parser(subparsers)
     version_parser = add_version_parser(subparsers)
