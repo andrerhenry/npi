@@ -3,6 +3,8 @@ from pathlib import Path
 from argparse import _SubParsersAction, ArgumentParser, Namespace
 from yarl import URL
 
+from .version import get_niagara_version
+
 class InstallNamespace(Namespace):
     niagara_version: str
     package_name: str
@@ -15,9 +17,15 @@ def get_request(args: InstallNamespace):
         args (InstallNamespace): Contians the package name and version
     """    
     repo_url = URL('http://18.119.133.195/niagara/')
-    folder_name = args.niagara_version
+    version = get_niagara_version()
+    print(args)
+    folder_name = version.major_version + '.' + version.minor_version
+    
+    #folder_name = args.niagara_version
     file_name = args.package_name
 
+    # Debug line
+    print(repo_url/folder_name/file_name)
 
     response = requests.get(repo_url/folder_name/file_name)
     if response.status_code == 200:
