@@ -83,6 +83,24 @@ def check_version(niagara_distro:str) -> NiagaraVersion:
     return NiagaraVersion(distributor, major_version, minor_version, patch_version)
 
 
+def check_verison_override(optional_version_input:str | None)-> str:
+    """checks the override version input, if none was provided it will return the detected version
+
+    Args:
+        optional_version_input (str | None): Optional version override from argument parser.
+
+    Returns:
+        str: Niagara version string.
+    """
+    if optional_version_input:
+        version = optional_version_input
+        logger.debug('From --nagara-version %s', version)
+    else:
+        version_info = get_niagara_version()
+        version = version_info.major_version + '.' + version_info.minor_version
+        logger.debug('From get_niagara_version %s', version)
+    return version
+
 def add_version_parser(subparsers: _SubParsersAction) -> ArgumentParser:
     """Addes command to show the current version of niagara detected.
 

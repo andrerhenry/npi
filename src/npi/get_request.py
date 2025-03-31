@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from argparse import _SubParsersAction, ArgumentParser
 from yarl import URL
 
-from .version import get_niagara_version
+from .version import get_niagara_version, check_verison_override
 
 logger = logging.getLogger(__name__)
 
@@ -28,19 +28,11 @@ def install_package(args: InstallArgs):
     """    
     repo_url = URL('http://18.119.133.195/niagara/')
     file_name = args.package_name
-
-    if args.niagara_version:
-        version = args.niagara_version
-        logger.debug('From --nagara-version %s', version)
-    else:
-        version_info = get_niagara_version()
-        version = version_info.major_version + '.' +version_info.minor_version
-        logger.debug('From get_niagara_version %s', version)
-    folder_name = version
+    version = check_verison_override(args.niagara_version)
     
-    logging.debug('URL with args: %s', (repo_url/folder_name/file_name))
+    logging.debug('URL with args: %s', (repo_url/version/file_name))
 
-    response = requests.get(repo_url/folder_name/file_name)
+    response = requests.get(repo_url/version/file_name)
     if response.status_code == 200:
         with open(file_name, 'wb') as file:
             file.write(response.content)
