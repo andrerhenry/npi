@@ -24,11 +24,11 @@ class NiagaraVersion:
     patch_version: int
 
 
-def get_niagara_path() -> Path | None:
+def get_niagara_path() -> Path:
     """Gets the Path to root directory of the niagara installation.
 
     Returns:
-        Path | None: Path to niagara root directory, or None if dir is not recognised.
+        Path: Path to niagara root directory.
     """    
     parent_dir = Path(os.getcwd()).name
     
