@@ -3,7 +3,6 @@ from argparse import _SubParsersAction, ArgumentParser
 from pathlib import Path
 from collections.abc import Mapping
 from typing import NamedTuple
-
 from rapidfuzz import fuzz, process
 
 from .version import get_niagara_path
@@ -24,7 +23,7 @@ def get_install_dir() -> Path:
     return install_dir
 
 
-def list_modules(args) -> Mapping:
+def list_modules_local(args) -> Mapping:
     """Returns and prints the modules installed.
 
     Args:
@@ -88,7 +87,7 @@ def add_list_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
         'list', 
         help='Lists the current installed modules', 
         description='Lists the current installed modules')
-    parser_list.set_defaults(func=list_modules)
+    parser_list.set_defaults(func=list_modules_local)
     
 def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
     """Search for the module specified. 
