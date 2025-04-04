@@ -4,6 +4,8 @@ from argparse import ArgumentParser, _SubParsersAction
 from pathlib import Path
 from dataclasses import dataclass
 
+from .npi_errors import NiagaraSystemError
+
 logger = logging.getLogger(__name__)
 
 @dataclass
@@ -29,14 +31,17 @@ def get_niagara_path() -> Path | None:
         Path | None: Path to niagara root directory, or None if dir is not recognised.
     """    
     parent_dir = Path(os.getcwd()).name
-
+    
     if parent_dir == 'bin' or parent_dir == 'modules':
         niagara_path = (Path(os.getcwd()).parent)
     elif '-' in parent_dir and '.' in parent_dir:
         niagara_path = Path(os.getcwd())
     else:
-        # TODO: instert error here
-        print('Niagara version not recongized.')
+        # TODO: add help
+        raise NiagaraSystemError
+        #raise Exception('Niaraga file structure not recognised.').with_traceback(None) from None
+        #print('Niagara version not recongized.')
+        #print('is this one running?')
         return None
     return niagara_path
 

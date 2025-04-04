@@ -9,6 +9,7 @@ logger.info('LoggingStarted')
 from .module_index import add_list_parsers, add_search_parsers
 from .get_request import add_install_parser, InstallArgs
 from .version import add_version_parser
+from .npi_errors import NiagaraSystemError
 
 # Temp path to local dir for testing 
 global REPO_PATH
@@ -16,18 +17,21 @@ global REPO_PATH
 
 
 def main():
-    parser = ArgumentParser(prog='npi', 
-                            description='Niagara package installer helps you install and manage '
-                            'Niagara packages.')
-    subparsers = parser.add_subparsers(title='subcommands', dest='subcommands', metavar='', required=False)
+    try:
+        parser = ArgumentParser(prog='npi', 
+                                description='Niagara package installer helps you install and manage '
+                                'Niagara packages.')
+        subparsers = parser.add_subparsers(title='subcommands', dest='subcommands', metavar='', required=False)
 
-    install_parser = add_install_parser(subparsers)
-    version_parser = add_version_parser(subparsers)
-    list_parser = add_list_parsers(subparsers)
-    search_parser = add_search_parsers(subparsers)
+        install_parser = add_install_parser(subparsers)
+        version_parser = add_version_parser(subparsers)
+        list_parser = add_list_parsers(subparsers)
+        search_parser = add_search_parsers(subparsers)
 
-    args = parser.parse_args()
-    args.func(args)
+        args = parser.parse_args()
+        args.func(args)
+    except NiagaraSystemError as error:
+        print(error)
 
 
 
