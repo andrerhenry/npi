@@ -4,7 +4,7 @@ from argparse import ArgumentParser, _SubParsersAction
 from pathlib import Path
 from dataclasses import dataclass
 
-from .npi_errors import NiagaraSystemError
+from .npi_errors import NiagaraSystemDectectionError
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ def get_niagara_path() -> Path | None:
     elif '-' in parent_dir and '.' in parent_dir:
         niagara_path = Path(os.getcwd())
     else:
-        raise NiagaraSystemError("Niagara System could not be detected. " \
+        raise NiagaraSystemDectectionError("Niagara System could not be detected. " \
         "Please use npi at the Niagara directory or specify the path a Niagara file system.")
     return niagara_path
 

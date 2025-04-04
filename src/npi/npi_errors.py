@@ -1,8 +1,9 @@
 
 
-class NiagaraSystemException(Exception):
-    """ Exception for error in reading Niagara system or if user does not specify a directory."""
-    def __init__(self):
-        self.message = "Niagara System could not be detected. " \
-        "Please use npi at the Niagara directory or specify the path a Niagara file system."
-        super().__init__(self.message)
+class NiagaraSystemDectectionError(Exception):
+    """ Exception for error in reading Niagara system cannot be found."""
+    def __init__(self, message):
+        self.message = message
+
+    def __str__(self):
+        return f"{self.__class__.__name__}: {self.message}"

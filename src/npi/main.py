@@ -9,7 +9,7 @@ logger.info('LoggingStarted')
 from .module_index import add_list_parsers, add_search_parsers
 from .get_request import add_install_parser, InstallArgs
 from .version import add_version_parser
-from .npi_errors import NiagaraSystemError
+from .npi_errors import NiagaraSystemDectectionError
 
 # Temp path to local dir for testing 
 global REPO_PATH
@@ -30,7 +30,7 @@ def main():
 
         args = parser.parse_args()
         args.func(args)
-    except NiagaraSystemError as error:
+    except NiagaraSystemDectectionError as error:
         print(error)
 
 
