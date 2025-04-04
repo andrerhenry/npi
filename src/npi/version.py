@@ -37,12 +37,8 @@ def get_niagara_path() -> Path | None:
     elif '-' in parent_dir and '.' in parent_dir:
         niagara_path = Path(os.getcwd())
     else:
-        # TODO: add help
-        raise NiagaraSystemError
-        #raise Exception('Niaraga file structure not recognised.').with_traceback(None) from None
-        #print('Niagara version not recongized.')
-        #print('is this one running?')
-        return None
+        raise NiagaraSystemError("Niagara System could not be detected. " \
+        "Please use npi at the Niagara directory or specify the path a Niagara file system.")
     return niagara_path
 
 
