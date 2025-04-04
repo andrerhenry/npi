@@ -24,7 +24,7 @@ def get_install_dir() -> Path:
 
 
 def list_modules_local(args) -> Mapping:
-    """Returns and prints the modules installed.
+    """Returns and prints the modules installed in the Niagara modules direcotry.
 
     Args:
         args (argparse.Namespace)): Parsed command-line arguments (unused).
@@ -32,12 +32,8 @@ def list_modules_local(args) -> Mapping:
     Returns:
         Mapping: List of modules installed.
     """    
-    if not (niagara_path := get_niagara_path()):
-        #TODO error
-        print('Modules folder not recognised.')
-        return
-    
-    install_dir = niagara_path/'modules'
+
+    install_dir = get_niagara_path()/'modules'
     module_list = os.listdir(install_dir)
     print("Listing installed packages for {install} at location:")
     print(install_dir)
