@@ -53,17 +53,13 @@ def get_niagara_version(args = None) -> NiagaraVersion | None:
          and None if path is not recognised.
     """ 
     niagara_distro = get_niagara_path().name
-    if niagara_distro:
-        version_info = check_version(niagara_distro)
-        
-        # TEMP for debug
-        logger.debug('Distributor: %s, Version: %s.%s', version_info.distributor, version_info.major_version, version_info.minor_version)
-        print(f'Distributor: {version_info.distributor}, Version: {version_info.major_version}.{version_info.minor_version}')
-        #return Version(version_info.major_version, version_info.minor_version)
-        return version_info
-    else: 
-        # TODO: Raise execption here or in previsous func instead of returning None.
-        return None
+    version_info = check_version(niagara_distro)
+    
+    # TEMP for debug
+    logger.debug('Distributor: %s, Version: %s.%s', version_info.distributor, version_info.major_version, version_info.minor_version)
+    print(f'Distributor: {version_info.distributor}, Version: {version_info.major_version}.{version_info.minor_version}')
+    #return Version(version_info.major_version, version_info.minor_version)
+    return version_info
 
 
 def check_version(niagara_distro:str) -> NiagaraVersion:
