@@ -42,6 +42,15 @@ def get_niagara_path() -> Path:
     return niagara_path
 
 
+def get_install_dir() -> Path:
+    """Gets the Path to modules folder of the niagara installaiton.
+
+    Returns:
+        Path: Installation directory.
+    """    
+    return get_niagara_path() / 'modules'
+
+
 def get_niagara_version(args = None) -> NiagaraVersion | None:
     """Checks the niagara version information and returns major and minor version. 
 
