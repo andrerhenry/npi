@@ -40,8 +40,7 @@ def install_package(args: InstallArgs):
     #         manifest = json.loads(response_manifest.content.decode('UTF-8'))
     #         logging.debug('Manifest file download sucsesfully')
     if package_name in manifest:
-        # TODO: change file to files in manifest.json
-        files = manifest[package_name]['file']
+        files = manifest[package_name]['files']
         logging.debug('Files queued for download: %s', ' '.join(files))
         for file_name in files:
             response_package = requests.get(repo_url/version/file_name)
