@@ -34,10 +34,11 @@ def install_package(args: InstallArgs):
     logging.debug('URL with args: %s', (repo_url/version/package_name))
 
     response_manifest = requests.get(repo_url/version/'manifest.json')
-    if response_manifest.status_code == 200:
-        with open('manifest.json', 'rb') as file:
-            manifest = json.loads(response_manifest.content.decode('UTF-8'))
-            logging.debug('Manifest file download sucsesfully')
+    manifest = json.loads(response_manifest.content.decode('UTF-8'))
+    # if response_manifest.status_code == 200:
+    #     with open('manifest.json', 'rb') as file:
+    #         manifest = json.loads(response_manifest.content.decode('UTF-8'))
+    #         logging.debug('Manifest file download sucsesfully')
     if package_name in manifest:
         # TODO: change file to files in manifest.json
         files = manifest[package_name]['file']
