@@ -27,14 +27,21 @@ def install_package(args: InstallArgs):
         args (InstallArgs): Contians the argument namespace for the install parser.
     """    
     repo_url = URL('http://18.119.133.195/niagara/')
-    file_name = args.package_name
     version = check_verison_override(args.niagara_version)
+    package_name = args.package_name
     
-    logging.debug('URL with args: %s', (repo_url/version/file_name))
+    logging.debug('URL with args: %s', (repo_url/version/package_name))
 
-    response = requests.get(repo_url/version/file_name)
+    
+    response = requests.get(repo_url/version/'manifest.json')
     if response.status_code == 200:
-        with open(file_name, 'wb') as file:
+        with open('manifest.json', 'wb') as file:
+            print("got the file")
+            file.write(response.content)
+
+    response = requests.get(repo_url/version/package_name)
+    if response.status_code == 200:
+        with open(package_name, 'wb') as file:
             file.write(response.content)
         print(f'Successfully installed {args.package_name}')
     else:
