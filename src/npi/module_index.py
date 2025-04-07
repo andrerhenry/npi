@@ -5,7 +5,7 @@ from collections.abc import Mapping
 from typing import NamedTuple
 from rapidfuzz import fuzz, process
 
-from .version import get_niagara_path, get_install_dir, get_niagara_version
+from npi.version import get_niagara_path, get_install_dir, get_niagara_version
 
 class PackageName(NamedTuple):
     package_name:str

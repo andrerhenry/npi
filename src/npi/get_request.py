@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from argparse import _SubParsersAction, ArgumentParser
 from yarl import URL
 
-from .version import get_niagara_version, check_verison_override
+from npi.version import get_niagara_version, check_verison_override
 
 logger = logging.getLogger(__name__)
 
