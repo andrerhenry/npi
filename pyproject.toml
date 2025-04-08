@@ -32,4 +32,5 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "npi",
+    "pyinstaller>=6.12.0",
 ]
