@@ -29,7 +29,8 @@ def get_niagara_path() -> Path:
 
     Returns:
         Path: Path to niagara root directory.
-    """    
+    """
+    #TODO: add override variable to overrride the path
     parent_dir = Path(os.getcwd()).name
     
     if parent_dir == 'bin' or parent_dir == 'modules':

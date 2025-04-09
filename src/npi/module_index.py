@@ -5,6 +5,7 @@ from argparse import _SubParsersAction, ArgumentParser
 from pathlib import Path
 from collections.abc import Mapping
 from typing import NamedTuple
+
 from rapidfuzz import fuzz, process
 from yarl import URL
 
@@ -15,7 +16,6 @@ REPO_URL = URL('http://18.119.133.195/niagara/')
 
 class PackageName(NamedTuple):
     package_name:str
-
 
 
 def list_modules_local(args) -> Mapping:
@@ -39,7 +39,7 @@ def list_modules_local(args) -> Mapping:
 
 
 def search_package_local(args: PackageName) -> bool:
-    """Finds the closet named module.
+    """Finds the closet installed package.
 
     Args:
         module_name (str): Package name to search.
@@ -65,7 +65,7 @@ def search_package_local(args: PackageName) -> bool:
 
 
 def get_manifest(version: str) -> dict:
-    """Gets the reposistory manifest of all packages for the specified version
+    """Gets the reposistory manifest of all packages for the specified version.
 
     Args:
         version (str): version of niagaara in MAJOR.MINOR format
@@ -81,23 +81,21 @@ def get_manifest(version: str) -> dict:
 
 
 def fuzzy_search(package_name: str, version: str) -> str | None:
-    """Finds the closet named module in repo.
+    """Finds the closet named module in repo when excapt package is not found.
 
     Args:
         module_name (str): Package name to search.
 
     Returns:
         str: closest named module, or None if a similar named package is not avaible.
-    """    
-
+    """
     package_list = get_manifest(version).keys()
-    # Look in to droping file extention in index/search
     search_results = process.extractOne(package_name, package_list, scorer=fuzz.ratio)
+
     if search_results[1] >= 90:
         closest_package = search_results[0]
         print("Package not found.")
         print(f"Did you mean: {closest_package}?")
-    
     elif search_results[1] >= 60:
         closest_package = search_results[0]
         print("Package not found.")
@@ -106,6 +104,7 @@ def fuzzy_search(package_name: str, version: str) -> str | None:
         print('Module not found.')
         return None
     return closest_package
+
 
 
 
@@ -123,7 +122,8 @@ def add_list_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
         help='Lists the current installed modules', 
         description='Lists the current installed modules')
     parser_list.set_defaults(func=list_modules_local)
-    
+
+
 def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
     """Search for the module specified. 
 
