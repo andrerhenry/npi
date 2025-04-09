@@ -1,4 +1,5 @@
 import requests
+import json
 import logging
 from dataclasses import dataclass
 from argparse import _SubParsersAction, ArgumentParser
@@ -27,18 +28,30 @@ def install_package(args: InstallArgs):
         args (InstallArgs): Contians the argument namespace for the install parser.
     """    
     repo_url = URL('http://18.119.133.195/niagara/')
-    file_name = args.package_name
     version = check_verison_override(args.niagara_version)
+    package_name = args.package_name
     
-    logging.debug('URL with args: %s', (repo_url/version/file_name))
+    logging.debug('URL with args: %s', (repo_url/version/package_name))
 
-    response = requests.get(repo_url/version/file_name)
-    if response.status_code == 200:
-        with open(file_name, 'wb') as file:
-            file.write(response.content)
-        print(f'Successfully installed {args.package_name}')
-    else:
-        print(f'Failed to download file: {response.status_code}')
+    response_manifest = requests.get(repo_url/version/'manifest.json')
+    manifest = json.loads(response_manifest.content.decode('UTF-8'))
+    # if response_manifest.status_code == 200:
+    #     with open('manifest.json', 'rb') as file:
+    #         manifest = json.loads(response_manifest.content.decode('UTF-8'))
+    #         logging.debug('Manifest file download sucsesfully')
+    if package_name in manifest:
+        files = manifest[package_name]['files']
+        logging.debug('Files queued for download: %s', ' '.join(files))
+        for file_name in files:
+            response_package = requests.get(repo_url/version/file_name)
+            if response_package.status_code == 200:
+                with open(file_name, 'wb') as file:
+                    file.write(response_package.content)
+                logging.debug(f'Successfully installed: %s', (file_name))
+                print(f'Successfully installed {file_name}')
+            else:
+                logging.debug(f'Failed to download file: %s', (file_name))
+                print(f'Failed to download file: {response_package.status_code}')
 
 
 
