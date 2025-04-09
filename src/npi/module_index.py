@@ -10,18 +10,6 @@ from .version import get_niagara_path, get_install_dir, get_niagara_version
 class PackageName(NamedTuple):
     package_name:str
 
-# use the get install dir from version instead.
-# def get_install_dir() -> Path:
-#     """Return the return installation directory releitivly from the currenty path
-
-#     Returns:
-#         Path: instaallation directory
-#     """    
-#     # temp func? move to version module?
-#     base_path = Path(os.getcwd()) / "mock_install"
-#     niagara_folder = "Niagara-4.14.0.162"
-#     install_dir = base_path / niagara_folder / "modules"
-#     return install_dir
 
 
 def list_modules_local(args) -> Mapping:
