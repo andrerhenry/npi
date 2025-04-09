@@ -9,6 +9,10 @@ from .version import get_niagara_version, check_verison_override
 
 logger = logging.getLogger(__name__)
 
+global repo_url
+repo_url = URL('http://18.119.133.195/niagara/')
+
+
 @dataclass
 class InstallArgs:
     """A class holding the passed arguments passed from the install parser
@@ -20,6 +24,20 @@ class InstallArgs:
     package_name: str
     niagara_version: str
 
+def get_manifest(version: str) -> dict:
+    """Gets the reposistory manifest of all packages for the specified version
+
+    Args:
+        version (str): version of niagaara in MAJOR.MINOR format
+
+    Returns:
+        dict: package manifest with meta data
+    """
+    # TODO change str to version type
+    logging.debug('URL with args: %s', (repo_url/version))
+    response_manifest = requests.get(repo_url/version/'manifest.json')
+    manifest = json.loads(response_manifest.content.decode('UTF-8'))
+    return manifest
 
 def install_package(args: InstallArgs):
     """Installed the specified package from the repoistory
@@ -27,18 +45,12 @@ def install_package(args: InstallArgs):
     Args:
         args (InstallArgs): Contians the argument namespace for the install parser.
     """    
-    repo_url = URL('http://18.119.133.195/niagara/')
+
     version = check_verison_override(args.niagara_version)
     package_name = args.package_name
-    
+    manifest = get_manifest(version)
     logging.debug('URL with args: %s', (repo_url/version/package_name))
 
-    response_manifest = requests.get(repo_url/version/'manifest.json')
-    manifest = json.loads(response_manifest.content.decode('UTF-8'))
-    # if response_manifest.status_code == 200:
-    #     with open('manifest.json', 'rb') as file:
-    #         manifest = json.loads(response_manifest.content.decode('UTF-8'))
-    #         logging.debug('Manifest file download sucsesfully')
     if package_name in manifest:
         files = manifest[package_name]['files']
         logging.debug('Files queued for download: %s', ' '.join(files))
@@ -52,6 +64,10 @@ def install_package(args: InstallArgs):
             else:
                 logging.debug(f'Failed to download file: %s', (file_name))
                 print(f'Failed to download file: {response_package.status_code}')
+    else:
+        #TODO inset package not found exception
+        print("Package not found.")
+
 
 
 
