@@ -32,7 +32,7 @@ def list_modules_local(args) -> Mapping:
     return module_list
 
 
-def find_module(args: PackageName) -> bool:
+def search_package_local(args: PackageName) -> bool:
     """Finds the closet named module.
 
     Args:
@@ -87,5 +87,5 @@ def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
         help='Search for the module specified', 
         description='Search for the module specified')
     parser_list.add_argument('package_name', type=str)
-    parser_list.set_defaults(func=find_module)
+    parser_list.set_defaults(func=search_package_local)
 
