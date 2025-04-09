@@ -6,11 +6,12 @@ from argparse import _SubParsersAction, ArgumentParser
 from yarl import URL
 
 from .version import get_niagara_version, check_verison_override
+from .module_index import get_manifest, fuzzy_search
 
 logger = logging.getLogger(__name__)
 
-global repo_url
-repo_url = URL('http://18.119.133.195/niagara/')
+global REPO_URL
+REPO_URL = URL('http://18.119.133.195/niagara/')
 
 
 @dataclass
@@ -24,20 +25,7 @@ class InstallArgs:
     package_name: str
     niagara_version: str
 
-def get_manifest(version: str) -> dict:
-    """Gets the reposistory manifest of all packages for the specified version
 
-    Args:
-        version (str): version of niagaara in MAJOR.MINOR format
-
-    Returns:
-        dict: package manifest with meta data
-    """
-    # TODO change str to version type
-    logging.debug('URL with args: %s', (repo_url/version))
-    response_manifest = requests.get(repo_url/version/'manifest.json')
-    manifest = json.loads(response_manifest.content.decode('UTF-8'))
-    return manifest
 
 def install_package(args: InstallArgs):
     """Installed the specified package from the repoistory
@@ -49,13 +37,13 @@ def install_package(args: InstallArgs):
     version = check_verison_override(args.niagara_version)
     package_name = args.package_name
     manifest = get_manifest(version)
-    logging.debug('URL with args: %s', (repo_url/version/package_name))
+    logging.debug('URL with args: %s', (REPO_URL/version/package_name))
 
     if package_name in manifest:
         files = manifest[package_name]['files']
         logging.debug('Files queued for download: %s', ' '.join(files))
         for file_name in files:
-            response_package = requests.get(repo_url/version/file_name)
+            response_package = requests.get(REPO_URL/version/file_name)
             if response_package.status_code == 200:
                 with open(file_name, 'wb') as file:
                     file.write(response_package.content)
@@ -66,7 +54,8 @@ def install_package(args: InstallArgs):
                 print(f'Failed to download file: {response_package.status_code}')
     else:
         #TODO inset package not found exception
-        print("Package not found.")
+        fuzzy_search(args.package_name, version)
+        
 
 
 
