@@ -45,26 +45,25 @@ def get_manifest(version: str) -> dict:
     return manifest
 
 
-def search_package_local(args: PackageName) -> bool:
-    """Finds the closet installed package.
+def search_package_local(package_name: str) -> None:
+    """Searches the installed files for the specified package.
 
     Args:
-        module_name (str): Package name to search.
-
-    Returns:
-        bool: if the module is found
+        package_name (str): Package name to search.
     """    
     # TODO change to search at server. serach with API request?
     install_dir = get_niagara_path()/'modules'
     package_list = os.listdir(install_dir)
 
-    fuzzy_search(args.package_name, package_list)
-    
-    return True
+    if package_name in package_list:
+        print(f'Package {package_name} is installed.')
+    else:
+        fuzzy_search(package_name, package_list)
+    return 
 
 
-def search_package_repo(package_name: str, version: str) -> str:
-    """Finds the closet named module in repo when excapt package is not found.
+def search_package_repo(package_name: str, version: str) -> str | None:
+    """Finds the closet named package in the repository repo when excapt package is not found.
 
     Args:
         module_name (str): Package name to search.
@@ -73,6 +72,23 @@ def search_package_repo(package_name: str, version: str) -> str:
         str: closest named module, or None if a similar named package is not avaible.
     """
     package_list = get_manifest(version).keys()
+    if package_name in package_list:
+        print(f'Package {package_name} is availbe for install.')
+    else:
+        closest_package = fuzzy_search(package_name, package_list)
+    return closest_package
+
+
+
+def fuzzy_search(package_name: str, package_list: list [str]) -> str | None:
+    """Finds the closet named module in repo when excapt package is not found.
+
+    Args:
+        module_name (str): Package name to search.
+
+    Returns:
+        str: closest named module, or None if a similar named package is not avaible.
+    """
     search_results = process.extractOne(package_name, package_list, scorer=fuzz.ratio)
 
 
@@ -95,11 +111,12 @@ def fuzzy_search(package_name: str, package_list: list [str]) -> str | None:
     elif search_results[1] >= 60:
         closest_package = search_results[0]
         print("Package not found.")
-        print(f"Closet package is {closest_package}")
+        print(f"Closest package is {closest_package}")
     else:
         print('Module not found.')
         return None
     return closest_package
+
 
 
 def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
