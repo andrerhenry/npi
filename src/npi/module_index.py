@@ -2,14 +2,12 @@ import os
 import requests
 import json
 from argparse import _SubParsersAction, ArgumentParser
-from pathlib import Path
-from collections.abc import Mapping
 from typing import NamedTuple
 
 from rapidfuzz import fuzz, process
 from yarl import URL
 
-from .version import get_niagara_path, get_install_dir
+from .version import get_niagara_path
 
 global REPO_URL
 REPO_URL = URL('http://18.119.133.195/niagara/')
@@ -18,24 +16,20 @@ class PackageName(NamedTuple):
     package_name:str
 
 
-def list_modules_local(args) -> Mapping:
-    """Returns and prints the modules installed in the Niagara modules direcotry.
+def get_manifest(version: str) -> dict:
+    """Gets the reposistory manifest of all packages for the specified version.
 
     Args:
-        args (argparse.Namespace)): Parsed command-line arguments (unused).
+        version (str): version of niagaara in MAJOR.MINOR format
 
     Returns:
-        Mapping: List of modules installed.
-    """    
-    install_dir = get_install_dir()
-    module_list = os.listdir(install_dir)
-    print(f"Listing installed packages at location:")
-    print(install_dir, '\n')
-
-    for package in module_list:
-        print(package)
-
-    return module_list
+        dict: package manifest with meta data
+    """
+    # TODO change str to version type
+    #logging.debug('URL with args: %s', (REPO_URL/version))
+    response_manifest = requests.get(REPO_URL/version/'manifest.json')
+    manifest = json.loads(response_manifest.content.decode('UTF-8'))
+    return manifest
 
 
 def search_package_local(args: PackageName) -> bool:
@@ -64,22 +58,6 @@ def search_package_local(args: PackageName) -> bool:
     return True
 
 
-def get_manifest(version: str) -> dict:
-    """Gets the reposistory manifest of all packages for the specified version.
-
-    Args:
-        version (str): version of niagaara in MAJOR.MINOR format
-
-    Returns:
-        dict: package manifest with meta data
-    """
-    # TODO change str to version type
-    #logging.debug('URL with args: %s', (REPO_URL/version))
-    response_manifest = requests.get(REPO_URL/version/'manifest.json')
-    manifest = json.loads(response_manifest.content.decode('UTF-8'))
-    return manifest
-
-
 def fuzzy_search(package_name: str, version: str) -> str | None:
     """Finds the closet named module in repo when excapt package is not found.
 
@@ -104,24 +82,6 @@ def fuzzy_search(package_name: str, version: str) -> str | None:
         print('Module not found.')
         return None
     return closest_package
-
-
-
-
-def add_list_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
-    """Lists the installed modules
-
-    Args:
-        subparsers (_SubParsersAction): Base subparser
-
-    Returns:
-        ArgumentParser: subparser with list subparser
-    """
-    parser_list = subparsers.add_parser(
-        'list', 
-        help='Lists the current installed modules', 
-        description='Lists the current installed modules')
-    parser_list.set_defaults(func=list_modules_local)
 
 
 def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
