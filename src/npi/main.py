@@ -7,7 +7,7 @@ logging.basicConfig(level=logging.WARNING)
 logger.info('LoggingStarted')
 
 from .list import add_list_parsers
-from .module_index import add_search_parsers
+from .search import add_search_parsers
 from .get_request import add_install_parser, InstallArgs
 from .version import add_version_parser
 from .npi_errors import NiagaraSystemDectectionError
