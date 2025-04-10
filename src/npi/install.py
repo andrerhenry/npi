@@ -16,11 +16,11 @@ REPO_URL = URL('http://18.119.133.195/niagara/')
 
 @dataclass
 class InstallArgs:
-    """A class holding the passed arguments passed from the install parser
+    """A class holding the passed arguments from the install parser.
     
     Attributes:
         package_name (str): Name of package to be installed
-        niagara_version (str): Optional argument 
+        niagara_version (str): Optional argument for version override
     """
     package_name: str
     niagara_version: str
@@ -28,7 +28,7 @@ class InstallArgs:
 
 
 def install_package(args: InstallArgs):
-    """Installed the specified package from the repoistory
+    """Installed the specified package from the repoistory.
 
     Args:
         args (InstallArgs): Contians the argument namespace for the install parser.
@@ -73,6 +73,6 @@ def add_install_parser(subparsers: _SubParsersAction) -> ArgumentParser:
         name='install', 
         help='Install specified package', 
         description='Install specified package')
-    parser_install.add_argument('--niagara-version', type=str, metavar='', help='Override the version of niagara')
+    parser_install.add_argument('--niagara-version', type=str, metavar='<MAJOR.MINOR>', help='Override the version of niagara')
     parser_install.add_argument('package_name', type=str, help='Name of package to be installed')
     parser_install.set_defaults(func=install_package)
