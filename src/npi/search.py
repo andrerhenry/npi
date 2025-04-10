@@ -9,7 +9,7 @@ from typing import NamedTuple
 from rapidfuzz import fuzz, process
 from yarl import URL
 
-from .version import get_niagara_path
+from .version import get_niagara_path, check_verison_override
 from .npi_errors import GetPackageManifestError
 
 logger = logging.getLogger(__name__)
@@ -133,9 +133,10 @@ def fuzzy_search(package_name: str, package_list: list [str]) -> str | None:
 
 def search_command(args: SearchArgs):
     if args.local:
-        print("local serach")
+        search_package_local(args.package_name)
     else:
-        print('regular search')
+        version = check_verison_override(args.niagara_version)
+        search_package_repo(args.package_name, version)
     return
 
 
@@ -150,12 +151,12 @@ def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
     """
     parser_search = subparsers.add_parser(
         'search', 
-        help='Searches the repositor for the specified package.', 
-        description='Search for the module specified')
+        help='Searches the repository for the specified package.', 
+        description='Search for the specified pakcage.')
     parser_search.add_argument('package_name', type=str)
     parser_search.set_defaults(func=search_command)
 
     group = parser_search.add_mutually_exclusive_group()
-    group.add_argument('--niagara-version', type=str, metavar='<MAJOR.MINOR>', help='Override the version of niagara.')
-    group.add_argument('--local', action='store_true', help='changes search to local packages.')
+    group.add_argument('--niagara-version', type=str, metavar='<MAJOR.MINOR>', help='Override the version of niagara in search.')
+    group.add_argument('--local', action='store_true', help='Changes search to search local packages.')
 
