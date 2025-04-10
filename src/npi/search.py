@@ -56,22 +56,14 @@ def search_package_local(args: PackageName) -> bool:
     """    
     # TODO change to search at server. serach with API request?
     install_dir = get_niagara_path()/'modules'
-    module_list = os.listdir(install_dir)
+    package_list = os.listdir(install_dir)
 
-    # Look in to droping file extention in index/search
-    search_results = process.extractOne(args.package_name, module_list, scorer=fuzz.ratio)
-    if args.package_name in module_list:
-        print(f"Module: {args.package_name} found")
-    #about 10 points for not include the file extention. rework to factor extention
-    elif search_results[1] >= 75:
-        print(f"Closet module is {search_results[0]}")
-    else:
-        print('Module not found.')
-        return
+    fuzzy_search(args.package_name, package_list)
+    
     return True
 
 
-def fuzzy_search(package_name: str, version: str) -> str | None:
+def search_package_repo(package_name: str, version: str) -> str:
     """Finds the closet named module in repo when excapt package is not found.
 
     Args:
@@ -81,6 +73,19 @@ def fuzzy_search(package_name: str, version: str) -> str | None:
         str: closest named module, or None if a similar named package is not avaible.
     """
     package_list = get_manifest(version).keys()
+    search_results = process.extractOne(package_name, package_list, scorer=fuzz.ratio)
+
+
+
+def fuzzy_search(package_name: str, package_list: list [str]) -> str | None:
+    """Finds the closet named module in repo when excapt package is not found.
+
+    Args:
+        module_name (str): Package name to search.
+
+    Returns:
+        str: closest named module, or None if a similar named package is not avaible.
+    """
     search_results = process.extractOne(package_name, package_list, scorer=fuzz.ratio)
 
     if search_results[1] >= 90:
