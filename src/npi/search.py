@@ -8,6 +8,7 @@ from rapidfuzz import fuzz, process
 from yarl import URL
 
 from .version import get_niagara_path
+from .npi_errors import GetPackageManifestError
 
 global REPO_URL
 REPO_URL = URL('http://18.119.133.195/niagara/')
@@ -27,7 +28,16 @@ def get_manifest(version: str) -> dict:
     """
     # TODO change str to version type
     #logging.debug('URL with args: %s', (REPO_URL/version))
+    
     response_manifest = requests.get(REPO_URL/version/'manifest.json')
+
+    if response_manifest.status_code == 200:
+        manifest = json.loads(response_manifest.content.decode('UTF-8'))
+    else:
+        raise GetPackageManifestError("Error with Package Manifest. " \
+        "Error is likey at the server, not with local npi.")
+        #logging.debug(f'Failed to download manifest from vresion: %s', (version))
+
     manifest = json.loads(response_manifest.content.decode('UTF-8'))
     return manifest
 
