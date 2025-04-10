@@ -10,11 +10,10 @@ from .list import add_list_parsers
 from .search import add_search_parsers
 from .install import add_install_parser, InstallArgs
 from .version import add_version_parser
-from .npi_errors import NiagaraSystemDectectionError, GetPackageManifestError
+from .errors import NiagaraSystemDectectionError, GetPackageManifestError
 
 # Temp path to local dir for testing 
 global REPO_PATH
-
 
 
 def main():
@@ -35,8 +34,6 @@ def main():
         print(error)
     except GetPackageManifestError as error:
         print(error)
-
-
 
 
 if __name__ == "__main__":

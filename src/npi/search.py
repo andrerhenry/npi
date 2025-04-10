@@ -10,7 +10,7 @@ from rapidfuzz import fuzz, process
 from yarl import URL
 
 from .version import get_niagara_path, check_verison_override
-from .npi_errors import GetPackageManifestError
+from .errors import GetPackageManifestError
 
 logger = logging.getLogger(__name__)
 
