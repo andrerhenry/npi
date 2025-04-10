@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+import logging
 from argparse import _SubParsersAction, ArgumentParser
 from typing import NamedTuple
 
@@ -9,6 +10,8 @@ from yarl import URL
 
 from .version import get_niagara_path
 from .npi_errors import GetPackageManifestError
+
+logger = logging.getLogger(__name__)
 
 global REPO_URL
 REPO_URL = URL('http://18.119.133.195/niagara/')
@@ -27,16 +30,16 @@ def get_manifest(version: str) -> dict:
         dict: package manifest with meta data
     """
     # TODO change str to version type
-    #logging.debug('URL with args: %s', (REPO_URL/version))
+    logging.debug('Getting manifest at URL: %s', (REPO_URL/version))
     
     response_manifest = requests.get(REPO_URL/version/'manifest.json')
 
     if response_manifest.status_code == 200:
         manifest = json.loads(response_manifest.content.decode('UTF-8'))
     else:
+        logging.debug(f'Failed to download manifest from vresion: %s', (version))
         raise GetPackageManifestError("Error with Package Manifest. " \
         "Error is likey at the server, not with local npi.")
-        #logging.debug(f'Failed to download manifest from vresion: %s', (version))
 
     manifest = json.loads(response_manifest.content.decode('UTF-8'))
     return manifest
