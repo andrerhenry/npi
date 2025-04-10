@@ -4,7 +4,7 @@ from argparse import ArgumentParser, _SubParsersAction
 from pathlib import Path
 from dataclasses import dataclass
 
-from .npi_errors import NiagaraSystemDectectionError
+from .errors import NiagaraSystemDectectionError
 
 logger = logging.getLogger(__name__)
 
