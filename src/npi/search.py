@@ -3,6 +3,7 @@ import requests
 import json
 import logging
 from argparse import _SubParsersAction, ArgumentParser
+from dataclasses import dataclass
 from typing import NamedTuple
 
 from rapidfuzz import fuzz, process
@@ -16,8 +17,20 @@ logger = logging.getLogger(__name__)
 global REPO_URL
 REPO_URL = URL('http://18.119.133.195/niagara/')
 
-class PackageName(NamedTuple):
+@dataclass
+class SearchArgs:
+    """Class holding the passed arguments from the search parser.
+    
+    Attributes:
+        package_name (str): Name of package to be installed
+        niagara_version (str): Optional argument for version override
+        local (bool): flag to chagne to local search
+
+    """    
     package_name:str
+    niagara_version:str
+    local:bool
+
 
 
 def get_manifest(version: str) -> dict:
@@ -118,6 +131,13 @@ def fuzzy_search(package_name: str, package_list: list [str]) -> str | None:
     return closest_package
 
 
+def search_command(args: SearchArgs):
+    if args.local:
+        print("local serach")
+    else:
+        print('regular search')
+    return
+
 
 def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
     """Search for the module specified. 
@@ -128,10 +148,14 @@ def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
     Returns:
         ArgumentParser: subparser with search subparser
     """
-    parser_list = subparsers.add_parser(
+    parser_search = subparsers.add_parser(
         'search', 
-        help='Search for the module specified', 
+        help='Searches the repositor for the specified package.', 
         description='Search for the module specified')
-    parser_list.add_argument('package_name', type=str)
-    parser_list.set_defaults(func=search_package_local)
+    parser_search.add_argument('package_name', type=str)
+    parser_search.set_defaults(func=search_command)
+
+    group = parser_search.add_mutually_exclusive_group()
+    group.add_argument('--niagara-version', type=str, metavar='<MAJOR.MINOR>', help='Override the version of niagara.')
+    group.add_argument('--local', action='store_true', help='changes search to local packages.')
 
