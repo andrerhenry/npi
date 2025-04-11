@@ -88,8 +88,8 @@ def search_package_repo(package_name: str, version: str) -> str | None:
     if package_name in package_list:
         print(f'Package {package_name} is availbe for install.')
     else:
-        closest_package = fuzzy_search(package_name, package_list)
-    return closest_package
+        fuzzy_search(package_name, package_list)
+    return
 
 
 
