@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 import logging
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 logger.info('LoggingStarted')
 
 from .list import add_list_parsers
