@@ -92,20 +92,6 @@ def search_package_repo(package_name: str, version: str) -> str | None:
     return
 
 
-
-def fuzzy_search(package_name: str, package_list: list [str]) -> str | None:
-    """Finds the closet named package in repo when excapt package is not found.
-
-    Args:
-        package_name (str): Package name to search.
-
-    Returns:
-        str: closest named package, or None if a similar named package is not avaible.
-    """
-    search_results = process.extractOne(package_name, package_list, scorer=fuzz.ratio)
-
-
-
 def fuzzy_search(package_name: str, package_list: list [str]) -> str | None:
     """Finds the closet named package in repo when excapt package is not found.
 
