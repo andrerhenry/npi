@@ -24,7 +24,7 @@ class NiagaraVersion:
     minor_version: int
     patch_version: int
 
-    def __post_init__(self):
+    def __post_init__(self) -> None :
         self.version: str = str(self.major_version) + '.' + str(self.minor_version)
 
 
@@ -56,7 +56,7 @@ def get_install_dir() -> Path:
     return get_niagara_path() / 'modules'
 
 
-def get_niagara_version(args = None) -> NiagaraVersion | None:
+def get_niagara_version(args = None) -> NiagaraVersion:
     """Checks the niagara version information and returns major and minor version. 
 
     Args:
@@ -91,10 +91,9 @@ def check_version(niagara_distro:str) -> NiagaraVersion:
     """    
     version = niagara_distro.split('-')[-1]
     distributor = niagara_distro.replace('-' + version, '')
-    # add error catching to make sure sure versino information is parsed correctly?
-    major_version = version.split('.')[0]
-    minor_version = version.split('.')[1]
-    patch_version = version.split('.')[2]
+    major_version = int(version.split('.')[0])
+    minor_version = int(version.split('.')[1])
+    patch_version = int(version.split('.')[2])
     return NiagaraVersion(distributor, major_version, minor_version, patch_version)
 
 
@@ -112,7 +111,7 @@ def check_verison_override(optional_version_input:str | None)-> str:
         logger.debug('From --nagara-version %s', version)
     else:
         version_info = get_niagara_version()
-        version = version_info.major_version + '.' + version_info.minor_version
+        version = str(version_info.major_version) + '.' + str(version_info.minor_version)
         logger.debug('From get_niagara_version %s', version)
     return version
 
@@ -131,6 +130,7 @@ def add_version_parser(subparsers: _SubParsersAction) -> ArgumentParser:
         help='Shows the current version of niagara detected', 
         description='Shows the current version of niagara detected')
     version_parser.set_defaults(func=show_niagara_version)
+    return version_parser
 
 
 def npi_version() -> str:
