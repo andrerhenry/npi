@@ -33,7 +33,7 @@ winget install astral-sh.uv git.git
 Use `uv` to install the tool from Git:
 
 ```pwsh
-uv tool install git+https://https://github.com/andrerhenry/npi/
+uv tool install git+https://github.com/andrerhenry/npi/
 ```
 
 After installing the tool, run the following command if promted to add `uv` tools to your PATH:
