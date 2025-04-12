@@ -79,10 +79,10 @@ def search_package_repo(package_name: str, version: str) -> str | None:
     """Finds the closet named package in the repository repo when excapt package is not found.
 
     Args:
-        module_name (str): Package name to search.
+        package_name (str): Package name to search.
 
     Returns:
-        str: closest named module, or None if a similar named package is not avaible.
+        str: closest named package, or None if a similar named package is not avaible.
     """
     package_list = get_manifest(version).keys()
     if package_name in package_list:
@@ -94,26 +94,26 @@ def search_package_repo(package_name: str, version: str) -> str | None:
 
 
 def fuzzy_search(package_name: str, package_list: list [str]) -> str | None:
-    """Finds the closet named module in repo when excapt package is not found.
+    """Finds the closet named package in repo when excapt package is not found.
 
     Args:
-        module_name (str): Package name to search.
+        package_name (str): Package name to search.
 
     Returns:
-        str: closest named module, or None if a similar named package is not avaible.
+        str: closest named package, or None if a similar named package is not avaible.
     """
     search_results = process.extractOne(package_name, package_list, scorer=fuzz.ratio)
 
 
 
 def fuzzy_search(package_name: str, package_list: list [str]) -> str | None:
-    """Finds the closet named module in repo when excapt package is not found.
+    """Finds the closet named package in repo when excapt package is not found.
 
     Args:
-        module_name (str): Package name to search.
+        package_name (str): Package name to search.
 
     Returns:
-        str: closest named module, or None if a similar named package is not avaible.
+        str: closest named package, or None if a similar named package is not avaible.
     """
     search_results = process.extractOne(package_name, package_list, scorer=fuzz.ratio)
 
@@ -126,7 +126,7 @@ def fuzzy_search(package_name: str, package_list: list [str]) -> str | None:
         print("Package not found.")
         print(f"Closest package is {closest_package}")
     else:
-        print('Module not found.')
+        print('Package not found.')
         return None
     return closest_package
 
@@ -141,7 +141,7 @@ def search_command(args: SearchArgs):
 
 
 def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
-    """Search for the module specified. 
+    """Search for the package specified. 
 
     Args:
         subparsers (_SubParsersAction): Base subparser
