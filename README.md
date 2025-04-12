@@ -1,6 +1,6 @@
 # Niagara Package Installer (npi)
 
-**Niagara Package Installer** (npi) is a lightweight, developer-friendly CLI tool that helps you easily install and manage Niagara Framework software packages from custom repositories or Git sources.
+**Niagara Package Installer** (npi) is a lightweight CLI tool that helps you easily install and manage Niagara Framework software packages from the [Niagara Package Repository ](http://18.119.133.195/).
 
 ---
 
@@ -33,16 +33,16 @@ winget install astral-sh.uv git.git
 Use `uv` to install the tool from Git:
 
 ```pwsh
-uv tool install git+https://<your_repo_url>
+uv tool install git+https://https://github.com/andrerhenry/npi/
 ```
 
-After installing the tool, run the following command to add `uv` tools to your PATH:
+After installing the tool, run the following command if promted to add `uv` tools to your PATH:
 
 ```pwsh
 uv tool update-shell
 ```
 
-> **Note:** Then **restart your shell** to apply the changes.
+> **Note:** **Restart your shell** to apply the changes.
 
 Once installed and the shell is restarted, `npi` should be available in your terminal.
 
@@ -56,11 +56,19 @@ Once installed and the shell is restarted, `npi` should be available in your ter
 npi install vykonPro
 ```
 
+### Search for a package
+To search for a package in the reposistory:
+
+```pwsh
+npi search vykonPros
+```
+
 ---
 
 ## 📖 Commands (More Coming Soon)
 
 - `npi install <package>` — Installs the specified Niagara package
+- `version`  — Shows the current version of niagara detected
 - `npi list` — Lists available packages (future feature)
 - `npi search <keyword>` — Searches for a package (future feature)
 
@@ -81,9 +89,6 @@ npi list
 
 ## ❓FAQ
 
-**Q: Does this replace Workbench?**  
-A: No, it's a tool to streamline installation and management workflows, especially helpful for headless or scripted environments.
-
 **Q: Is `uv` required?**  
 A: Yes, it's used for bootstrapping and dependency management.
 
@@ -97,13 +102,16 @@ MIT License. See `LICENSE` file for details.
 ## 👷‍♂️ Contributing
 Want to help improve `npi`? PRs and issues welcome!
 
+npi provides packages based on user uploads. Please contriubte by uploading packages so others
+can use them. 
+
 ---
 
 ## 🔗 Links
 
 - UV Documentation: https://astral.sh/blog/uv-the-python-pkg-manager/
 - Niagara Framework (Tridium): https://www.tridium.com/
-
+- Niagara Package Repository : http://18.119.133.195/
 ---
 
-Crafted with ❤️ for building smarter automation tools.
+Crafted with ❤️ for building smarter building automation tools.
