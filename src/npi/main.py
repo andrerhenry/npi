@@ -3,12 +3,12 @@ from argparse import ArgumentParser
 import logging
 
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.WARNING)
+logging.basicConfig(level=logging.DEBUG)
 logger.info('LoggingStarted')
 
 from .list import add_list_parsers
 from .search import add_search_parsers
-from .install import add_install_parser, InstallArgs
+from .install import add_install_parser
 from .version import add_version_parser
 from .errors import NiagaraSystemDectectionError, GetPackageManifestError
 

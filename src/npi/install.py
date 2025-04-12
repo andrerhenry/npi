@@ -56,8 +56,8 @@ def install_package(args: InstallArgs):
                 logging.debug(f'Failed to download file: %s', (file_name))
                 print(f'Failed to download file: {response_package.status_code}')
     else:
-        #TODO inset package not found exception
-        fuzzy_search(args.package_name, version)
+        logging.debug('Package not found, running fuzy search.')
+        fuzzy_search(package_name, manifest.keys())
         
 
 
