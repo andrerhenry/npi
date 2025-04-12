@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from argparse import _SubParsersAction, ArgumentParser
 from yarl import URL
 
-from .version import get_niagara_version, check_verison_override
+from .version import get_install_dir, check_verison_override
 from .search import get_manifest, fuzzy_search
 
 logger = logging.getLogger(__name__)
@@ -34,18 +34,21 @@ def install_package(args: InstallArgs):
         args (InstallArgs): Contians the argument namespace for the install parser.
     """    
 
-    version = check_verison_override(args.niagara_version)
     package_name = args.package_name
+    version = check_verison_override(args.niagara_version)
+    install_dir = get_install_dir()
     manifest = get_manifest(version)
+
     logging.debug('URL with args: %s', (REPO_URL/version/package_name))
 
     if package_name in manifest:
         files = manifest[package_name]['files']
+
         logging.debug('Files queued for download: %s', ' '.join(files))
         for file_name in files:
             response_package = requests.get(REPO_URL/version/file_name)
             if response_package.status_code == 200:
-                with open(file_name, 'wb') as file:
+                with open(install_dir/file_name, 'wb') as file:
                     file.write(response_package.content)
                 logging.debug(f'Successfully installed: %s', (file_name))
                 print(f'Successfully installed {file_name}')
