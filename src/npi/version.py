@@ -2,6 +2,7 @@ import os
 import logging
 from argparse import ArgumentParser, _SubParsersAction
 from pathlib import Path
+from importlib.metadata import version
 from dataclasses import dataclass
 
 from .errors import NiagaraSystemDectectionError
@@ -130,3 +131,12 @@ def add_version_parser(subparsers: _SubParsersAction) -> ArgumentParser:
         help='Shows the current version of niagara detected', 
         description='Shows the current version of niagara detected')
     version_parser.set_defaults(func=show_niagara_version)
+
+
+def npi_version() -> str:
+    """Gets and displays the programs version information.
+
+    Returns:
+        str: Program version information message.
+    """    
+    return f'npi version installed {version('npi')}'
