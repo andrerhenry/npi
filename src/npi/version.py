@@ -23,6 +23,9 @@ class NiagaraVersion:
     minor_version: int
     patch_version: int
 
+    def __post_init__(self):
+        self.version: str = str(self.major_version) + '.' + str(self.minor_version)
+
 
 def get_niagara_path() -> Path:
     """Gets the Path to root directory of the niagara installation.
@@ -38,8 +41,8 @@ def get_niagara_path() -> Path:
     elif '-' in parent_dir and '.' in parent_dir:
         niagara_path = Path(os.getcwd())
     else:
-        raise NiagaraSystemDectectionError("Niagara System could not be detected. " \
-        "Please use npi at the Niagara directory or specify the path a Niagara file system.")
+        raise NiagaraSystemDectectionError('Niagara System could not be detected. " \
+        "Please use npi at the Niagara directory or specify the path a Niagara file system.')
     return niagara_path
 
 
@@ -111,6 +114,7 @@ def check_verison_override(optional_version_input:str | None)-> str:
         version = version_info.major_version + '.' + version_info.minor_version
         logger.debug('From get_niagara_version %s', version)
     return version
+
 
 def add_version_parser(subparsers: _SubParsersAction) -> ArgumentParser:
     """Addes command to show the current version of niagara detected.
