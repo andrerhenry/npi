@@ -1,11 +1,14 @@
 [project]
 name = "npi"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.3.2"
+description = "npi help you install and manage packages for the Niagara systems."
+keywords = ["BAS", "Niagara", "Tridium","package", "manager", "building", "HVAC", "control", "air", "hydronic", "Engineering"]
+classifiers = ["Development Status :: 2 - Pre-Alpha", "Topic :: Scientific/Engineering"]
 readme = "README.md"
 authors = [
     { name = "andrerhenry", email = "kinghenry238@gmail.com" }
 ]
+
 requires-python = ">=3.10"
 dependencies = [
     "rapidfuzz>=3.12.2",
@@ -15,14 +18,9 @@ dependencies = [
     "yarl>=1.18.3",
 ]
 
-[tool.setuptools]
-packages = ["npi"]
-packages-dir = {"" = "src"}
 
 [tool.uv.sources]
 npi = { workspace = true }
-
-
 
 [project.scripts]
 npi = "npi.main:main"
