@@ -74,23 +74,12 @@ npi search vykonPros
 
 ---
 
-## 🛠 Example Workflow
-
-```pwsh
-# Install Niagara Pro package
-npi install vykonPro
-
-# (future)
-npi search bacnet
-npi list
-```
-
----
 
 ## ❓FAQ
 
 **Q: Is `uv` required?**  
-A: Yes, it's used for bootstrapping and dependency management.
+A: Yes, it's used for bootstrapping and dependency management. Uv will install npi 
+and will provide a method for updatin npi. 
 
 ---
 
