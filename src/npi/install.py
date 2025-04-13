@@ -79,3 +79,4 @@ def add_install_parser(subparsers: _SubParsersAction) -> ArgumentParser:
     parser_install.add_argument('--niagara-version', type=str, metavar='<MAJOR.MINOR>', help='Override the version of niagara')
     parser_install.add_argument('package_name', type=str, help='Name of package to be installed')
     parser_install.set_defaults(func=install_package)
+    return parser_install
