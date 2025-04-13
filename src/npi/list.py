@@ -4,7 +4,7 @@ from collections.abc import Mapping
 
 from .version import get_install_dir
 
-def list_modules_local(args) -> Mapping:
+def list_modules_local(args) -> list[str]:
     """Returns and prints the modules installed in the Niagara modules direcotry.
 
     Args:
@@ -38,3 +38,4 @@ def add_list_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
         help='Lists the current installed modules', 
         description='Lists the current installed modules')
     parser_list.set_defaults(func=list_modules_local)
+    return parser_list
