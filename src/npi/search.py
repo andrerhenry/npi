@@ -4,7 +4,7 @@ import json
 import logging
 from argparse import _SubParsersAction, ArgumentParser
 from dataclasses import dataclass
-from typing import NamedTuple
+from collections.abc import Iterable
 
 from rapidfuzz import fuzz, process
 from yarl import URL
@@ -45,7 +45,7 @@ def get_manifest(version: str) -> dict:
     # TODO change str to version type
     logging.debug('Getting manifest at URL: %s', (REPO_URL/version))
     
-    response_manifest = requests.get(REPO_URL/version/'manifest.json')
+    response_manifest = requests.get(str(REPO_URL/version/'manifest.json'))
 
     if response_manifest.status_code == 200:
         manifest = json.loads(response_manifest.content.decode('UTF-8'))
@@ -82,18 +82,18 @@ def search_package_repo(package_name: str, version: str) -> str | None:
         package_name (str): Package name to search.
 
     Returns:
-        str: closest named package, or None if a similar named package is not avaible.
+        str | None: closest named package, or None if a similar named package is not avaible.
     """
     package_list = get_manifest(version).keys()
     if package_name in package_list:
         print(f'Package {package_name} is availbe for install.')
+        return package_name
     else:
-        fuzzy_search(package_name, package_list)
-    return
+        return fuzzy_search(package_name, package_list)
 
 
-def fuzzy_search(package_name: str, package_list: list [str]) -> str | None:
-    """Finds the closet named package in repo when excapt package is not found.
+def fuzzy_search(package_name: str, package_list: Iterable[str]) -> str | None:
+    """Finds the closet named package in iterable list, and None when package is not found.
 
     Args:
         package_name (str): Package name to search.
@@ -145,4 +145,5 @@ def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
     group = parser_search.add_mutually_exclusive_group()
     group.add_argument('--niagara-version', type=str, metavar='<MAJOR.MINOR>', help='Override the version of niagara in search.')
     group.add_argument('--local', action='store_true', help='Changes search to search local packages.')
+    return parser_search
 
