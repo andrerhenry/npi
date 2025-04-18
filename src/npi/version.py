@@ -5,6 +5,8 @@ from pathlib import Path
 from importlib.metadata import version
 from dataclasses import dataclass
 
+from jproperties import Properties
+
 from .errors import NiagaraSystemDectectionError
 
 logger = logging.getLogger(__name__)
@@ -56,6 +58,17 @@ def get_install_dir() -> Path:
     return get_niagara_path() / 'modules'
 
 
+def read_version_properties_file() -> Properties:
+    """Reads the niagara version properties files and stores data in Properties class.
+
+    Returns:
+        Properties: Data from version.poperties
+    """    
+    version_data= Properties()
+    properties_path = get_niagara_path()/"bin"
+    with open(properties_path/"version.properties", "rb") as file:
+        version_data.load(file, "utf-8")
+    return version_data
 
 def set_version(niagara_distro:str) -> NiagaraVersion:
     """Returns the distributor and version of the niagara distribution.
