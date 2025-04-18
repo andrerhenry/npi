@@ -73,17 +73,37 @@ def read_version_properties_file() -> Properties:
         version_data.load(file, "utf-8")
     return version_data
 
-def set_version(niagara_distro:str) -> NiagaraVersion:
-    """Returns the distributor and version of the niagara distribution.
+
+def set_version_from_properties_file(version_data: Properties) -> NiagaraVersion:
+    """Stores version information from version_data
 
     Args:
-        niagara_distro (str): File string of the folder containing the niagara distrobution.
+        version_data (Properties): veresion information from version.properties file.
 
     Returns:
-        NiagaraVersion: Data class contianing the distributor and version numbers.
+        NiagaraVersion: Data class contianing the version information.
     """    
-    version = niagara_distro.split('-')[-1]
-    distributor = niagara_distro.replace('-' + version, '')
+    version = NiagaraVersion(
+        version_data.get('verison').data,
+        version_data.get('versoin.major').data,
+        version_data.get('version.minor').data,
+        version_data.get('version.iteration').data,
+        version_data.get('version.build').data
+    )
+    return version
+
+
+def set_version_from_path(version_information:str) -> NiagaraVersion:
+    """Stores version information of current niagara. 
+
+    Args:
+        version_information Properties: Class of raw data holding version information.
+
+    Returns:
+        NiagaraVersion: Data class contianing the version information.
+    """    
+    version = version_information.split('-')[-1]
+    distributor = version_information.replace('-' + version, '')
     major_version = int(version.split('.')[0])
     minor_version = int(version.split('.')[1])
     patch_version = int(version.split('.')[2])
@@ -100,7 +120,7 @@ def get_niagara_version(args = None) -> NiagaraVersion:
         NiagaraVersion: Returns NiagaraVersion class containing version infromation.
     """ 
     niagara_distro = get_niagara_path().name
-    version_info = set_version(niagara_distro)
+    version_info = set_version_from_path(niagara_distro)
     logger.debug('Distributor: %s, Version: %s.%s', version_info.distributor, version_info.major_version, version_info.minor_version)
     return version_info
 
