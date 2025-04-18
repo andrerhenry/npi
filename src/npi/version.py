@@ -56,31 +56,8 @@ def get_install_dir() -> Path:
     return get_niagara_path() / 'modules'
 
 
-def get_niagara_version(args = None) -> NiagaraVersion:
-    """Checks the niagara version information and returns major and minor version. 
 
-    Args:
-        args (argparse.Namespace)): Parsed command-line arguments (unused).
-
-    Returns:
-        NiagaraVersion: Returns NiagaraVersion class containing version infromation.
-    """ 
-    niagara_distro = get_niagara_path().name
-    version_info = check_version(niagara_distro)
-    logger.debug('Distributor: %s, Version: %s.%s', version_info.distributor, version_info.major_version, version_info.minor_version)
-    return version_info
-
-
-def show_niagara_version(args) -> None:
-    """Prints the Version information from the detected niagara version. 
-
-    Args:
-        args (argparse.Namespace)): Parsed command-line arguments (unused).
-    """
-    version_info = get_niagara_version()
-    print(f'Distributor: {version_info.distributor}, Version: {version_info.major_version}.{version_info.minor_version}')
-
-def check_version(niagara_distro:str) -> NiagaraVersion:
+def set_version(niagara_distro:str) -> NiagaraVersion:
     """Returns the distributor and version of the niagara distribution.
 
     Args:
@@ -95,6 +72,30 @@ def check_version(niagara_distro:str) -> NiagaraVersion:
     minor_version = int(version.split('.')[1])
     patch_version = int(version.split('.')[2])
     return NiagaraVersion(distributor, major_version, minor_version, patch_version)
+
+
+def get_niagara_version(args = None) -> NiagaraVersion:
+    """Checks the niagara version information and returns major and minor version. 
+
+    Args:
+        args (argparse.Namespace)): Parsed command-line arguments (unused).
+
+    Returns:
+        NiagaraVersion: Returns NiagaraVersion class containing version infromation.
+    """ 
+    niagara_distro = get_niagara_path().name
+    version_info = set_version(niagara_distro)
+    logger.debug('Distributor: %s, Version: %s.%s', version_info.distributor, version_info.major_version, version_info.minor_version)
+    return version_info
+
+def show_niagara_version(args) -> None:
+    """Prints the Version information from the detected niagara version. 
+
+    Args:
+        args (argparse.Namespace)): Parsed command-line arguments (unused).
+    """
+    version_info = get_niagara_version()
+    print(f'Distributor: {version_info.distributor}, Version: {version_info.major_version}.{version_info.minor_version}')
 
 
 def check_verison_override(optional_version_input:str | None)-> str:
