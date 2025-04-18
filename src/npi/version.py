@@ -16,18 +16,21 @@ class NiagaraVersion:
     """A Class holding current niagara version information
     
     Attributes:
-        distributor (str): Distributor name
+        version (str): Whole version stringe
         major_version (int): Major version number
-        minor_version (int): minor version number
-        patch_version (int): Patch version number
+        minor_version (int): Minor version number
+        iteration_version (int): Iteration version number
+        build_version (int): Build version number
+        version_number(str): Version number in strings for directory paths
     """
-    distributor: str
+    version: str
     major_version: int
     minor_version: int
-    patch_version: int
+    iteration_version: int
+    build_version: int
 
     def __post_init__(self) -> None :
-        self.version: str = str(self.major_version) + '.' + str(self.minor_version)
+        self.version_number: str = str(self.major_version) + '.' + str(self.minor_version)
 
 
 def get_niagara_path() -> Path:
