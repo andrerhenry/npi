@@ -5,6 +5,8 @@ from pathlib import Path
 from importlib.metadata import version
 from dataclasses import dataclass
 
+from jproperties import Properties
+
 from .errors import NiagaraSystemDectectionError
 
 logger = logging.getLogger(__name__)
@@ -14,18 +16,21 @@ class NiagaraVersion:
     """A Class holding current niagara version information
     
     Attributes:
-        distributor (str): Distributor name
+        version (str): Whole version stringe
         major_version (int): Major version number
-        minor_version (int): minor version number
-        patch_version (int): Patch version number
+        minor_version (int): Minor version number
+        iteration_version (int): Iteration version number
+        build_version (int): Build version number
+        version_number(str): Version number in strings for directory paths
     """
-    distributor: str
+    version: str
     major_version: int
     minor_version: int
-    patch_version: int
+    iteration_version: int
+    build_version: int | None = None
 
     def __post_init__(self) -> None :
-        self.version: str = str(self.major_version) + '.' + str(self.minor_version)
+        self.version_number: str = str(self.major_version) + '.' + str(self.minor_version)
 
 
 def get_niagara_path() -> Path:
@@ -43,7 +48,7 @@ def get_niagara_path() -> Path:
         niagara_path = Path(os.getcwd())
     else:
         raise NiagaraSystemDectectionError('Niagara System could not be detected. " \
-        "Please use npi at the Niagara directory or specify the path a Niagara file system.')
+        "Please use npi from the Niagara console or the root of Niagara file system.')
     return niagara_path
 
 
@@ -56,6 +61,57 @@ def get_install_dir() -> Path:
     return get_niagara_path() / 'modules'
 
 
+def read_version_properties_file(properties_dir: Path) -> Properties:
+    """_sReads the niagara version properties files and stores data in Properties class.
+
+    Args:
+        properties_dir (Path): Path to directory of version.poperties.
+
+    Returns:
+        Properties: Data from version.poperties.
+    """
+    version_data= Properties()
+    with open(properties_dir/"version.properties", "rb") as file:
+        version_data.load(file, "utf-8") 
+    return version_data
+
+
+def set_version_from_properties_file(version_data: Properties) -> NiagaraVersion:
+    """Stores version information from version_data
+
+    Args:
+        version_data (Properties): veresion information from version.properties file.
+
+    Returns:
+        NiagaraVersion: Data class contianing the version information.
+    """    
+    version = NiagaraVersion(
+        version_data.get('version').data,
+        version_data.get('version.major').data,
+        version_data.get('version.minor').data,
+        version_data.get('version.iteration').data,
+        version_data.get('version.build').data
+    )
+    return version
+
+
+def set_version_from_path(version_information:str) -> NiagaraVersion:
+    """Stores version information of current niagara. 
+
+    Args:
+        version_information Properties: Class of raw data holding version information.
+
+    Returns:
+        NiagaraVersion: Data class contianing the version information.
+    """    
+    version = version_information.split('-')[-1]
+    distributor = version_information.replace('-' + version, '')
+    major_version = int(version.split('.')[0])
+    minor_version = int(version.split('.')[1])
+    patch_version = int(version.split('.')[2])
+    return NiagaraVersion(distributor, major_version, minor_version, patch_version)
+
+
 def get_niagara_version(args = None) -> NiagaraVersion:
     """Checks the niagara version information and returns major and minor version. 
 
@@ -65,11 +121,14 @@ def get_niagara_version(args = None) -> NiagaraVersion:
     Returns:
         NiagaraVersion: Returns NiagaraVersion class containing version infromation.
     """ 
-    niagara_distro = get_niagara_path().name
-    version_info = check_version(niagara_distro)
-    logger.debug('Distributor: %s, Version: %s.%s', version_info.distributor, version_info.major_version, version_info.minor_version)
-    return version_info
-
+    bin_path = get_niagara_path()/'bin'
+    if (bin_path/'version.properties').exists():
+        version = set_version_from_properties_file(read_version_properties_file(bin_path))
+    else:
+        niagara_distro = get_niagara_path().name
+        version = set_version_from_path(niagara_distro)
+    logger.debug('Version: %s.%s', version.major_version, version.minor_version)
+    return version
 
 def show_niagara_version(args) -> None:
     """Prints the Version information from the detected niagara version. 
@@ -78,23 +137,7 @@ def show_niagara_version(args) -> None:
         args (argparse.Namespace)): Parsed command-line arguments (unused).
     """
     version_info = get_niagara_version()
-    print(f'Distributor: {version_info.distributor}, Version: {version_info.major_version}.{version_info.minor_version}')
-
-def check_version(niagara_distro:str) -> NiagaraVersion:
-    """Returns the distributor and version of the niagara distribution.
-
-    Args:
-        niagara_distro (str): File string of the folder containing the niagara distrobution.
-
-    Returns:
-        NiagaraVersion: Data class contianing the distributor and version numbers.
-    """    
-    version = niagara_distro.split('-')[-1]
-    distributor = niagara_distro.replace('-' + version, '')
-    major_version = int(version.split('.')[0])
-    minor_version = int(version.split('.')[1])
-    patch_version = int(version.split('.')[2])
-    return NiagaraVersion(distributor, major_version, minor_version, patch_version)
+    print(f'Version: {version_info.major_version}.{version_info.minor_version}')
 
 
 def check_verison_override(optional_version_input:str | None)-> str:
