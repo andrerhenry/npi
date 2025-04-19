@@ -1,4 +1,3 @@
-import os 
 import logging
 from argparse import ArgumentParser, _SubParsersAction
 from pathlib import Path
@@ -33,22 +32,29 @@ class NiagaraVersion:
         self.version_number: str = str(self.major_version) + '.' + str(self.minor_version)
 
 
-def get_niagara_path(niagara_path:str | None = Path.cwd()) -> Path:
+def get_niagara_path(niagara_path:str | Path | None = None) -> Path:
     """Gets the Path to root directory of the niagara installation.
+
+    Args:
+        niagara_path (str | Path | None, optional): Nigara path override. Defaults to None.
+
+    Raises:
+        NiagaraSystemDetectionError: _description_
 
     Returns:
         Path: Path to niagara root directory.
     """
     #TODO: add override flag to parser
+    niagara_path = Path(niagara_path or Path.cwd())
     parent_dir = Path(niagara_path).name
+    
     if parent_dir == 'bin' or parent_dir == 'modules':
-        niagara_path = (niagara_path.parent)
-    elif '-' in parent_dir and '.' in parent_dir:
-        niagara_path = niagara_path
-    else:
-        raise NiagaraSystemDetectionError('Niagara System could not be detected. " \
-        "Please use npi from the Niagara console or the root of Niagara file system.')
-    return niagara_path
+        return (niagara_path.parent)
+    if '-' in parent_dir and '.' in parent_dir:
+        return niagara_path
+    
+    raise NiagaraSystemDetectionError('Niagara System could not be detected. " \
+    "Please use npi from the Niagara console or the root of Niagara file system.')
 
 
 def get_install_dir() -> Path:
