@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 from jproperties import Properties
 
-from .errors import NiagaraSystemDectectionError
+from .errors import NiagaraSystemDetectionError
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +33,7 @@ class NiagaraVersion:
         self.version_number: str = str(self.major_version) + '.' + str(self.minor_version)
 
 
-def get_niagara_path(niagara_path:str | None = os.getcwd()) -> Path:
+def get_niagara_path(niagara_path:str | None = Path.cwd()) -> Path:
     """Gets the Path to root directory of the niagara installation.
 
     Returns:
@@ -41,13 +41,12 @@ def get_niagara_path(niagara_path:str | None = os.getcwd()) -> Path:
     """
     #TODO: add override flag to parser
     parent_dir = Path(niagara_path).name
-    
     if parent_dir == 'bin' or parent_dir == 'modules':
-        niagara_path = (Path(os.getcwd()).parent)
+        niagara_path = (niagara_path.parent)
     elif '-' in parent_dir and '.' in parent_dir:
-        niagara_path = Path(os.getcwd())
+        niagara_path = niagara_path
     else:
-        raise NiagaraSystemDectectionError('Niagara System could not be detected. " \
+        raise NiagaraSystemDetectionError('Niagara System could not be detected. " \
         "Please use npi from the Niagara console or the root of Niagara file system.')
     return niagara_path
 

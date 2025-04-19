@@ -10,7 +10,7 @@ from .list import add_list_parsers
 from .search import add_search_parsers
 from .install import add_install_parser
 from .version import add_version_parser, npi_version
-from .errors import NiagaraSystemDectectionError, GetPackageManifestError
+from .errors import NiagaraSystemDetectionError, GetPackageManifestError
 
 # Temp path to local dir for testing 
 global REPO_PATH
@@ -31,7 +31,7 @@ def main():
 
         args = parser.parse_args()
         args.func(args)
-    except NiagaraSystemDectectionError as error:
+    except NiagaraSystemDetectionError as error:
         print(error)
     except GetPackageManifestError as error:
         print(error)

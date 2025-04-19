@@ -1,6 +1,6 @@
 
 
-class NiagaraSystemDectectionError(Exception):
+class NiagaraSystemDetectionError(Exception):
     """ Exception for error in reading Niagara system cannot be found."""
     def __init__(self, message):
         self.message = message
