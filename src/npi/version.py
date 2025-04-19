@@ -33,14 +33,14 @@ class NiagaraVersion:
         self.version_number: str = str(self.major_version) + '.' + str(self.minor_version)
 
 
-def get_niagara_path() -> Path:
+def get_niagara_path(niagara_path:str | None = os.getcwd()) -> Path:
     """Gets the Path to root directory of the niagara installation.
 
     Returns:
         Path: Path to niagara root directory.
     """
-    #TODO: add override variable to overrride the path
-    parent_dir = Path(os.getcwd()).name
+    #TODO: add override flag to parser
+    parent_dir = Path(niagara_path).name
     
     if parent_dir == 'bin' or parent_dir == 'modules':
         niagara_path = (Path(os.getcwd()).parent)
