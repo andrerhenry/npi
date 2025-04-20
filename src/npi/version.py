@@ -92,11 +92,12 @@ def set_version_from_properties_file(version_data: Properties) -> NiagaraVersion
     """    
     version = NiagaraVersion(
         version_data.get('version').data,
-        version_data.get('version.major').data,
-        version_data.get('version.minor').data,
-        version_data.get('version.iteration').data,
-        version_data.get('version.build').data
+        int(version_data.get('version.major').data),
+        int(version_data.get('version.minor').data),
+        int(version_data.get('version.iteration').data),
+        int(version_data.get('version.build').data)
     )
+    print(version)
     return version
 
 
