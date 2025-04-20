@@ -26,8 +26,21 @@ class InstallArgs:
     niagara_version: str
 
 
+def install_file(file_name: str, version: str, install_dir: str) -> None:
+    response_package = requests.get(REPO_URL/version/file_name)
+    
+    if response_package.status_code == 200:
+        with open(install_dir/file_name, 'wb') as file:
+            file.write(response_package.content)
+        logging.debug(f'Successfully installed: %s', (file_name))
+        print(f'Successfully installed {file_name}')
+    else:
+        logging.debug(f'Failed to download file: %s', (file_name))
+        print(f'Failed to download file: {response_package.status_code}')
 
-def install_package(args: InstallArgs):
+
+
+def install_package_command(args: InstallArgs):
     """Installed the specified package from the repoistory.
 
     Args:
@@ -43,24 +56,17 @@ def install_package(args: InstallArgs):
 
     if package_name in manifest:
         files = manifest[package_name]['files']
-
         logging.debug('Files queued for download: %s', ' '.join(files))
         for file_name in files:
-            response_package = requests.get(REPO_URL/version/file_name)
-            if response_package.status_code == 200:
-                with open(install_dir/file_name, 'wb') as file:
-                    file.write(response_package.content)
-                logging.debug(f'Successfully installed: %s', (file_name))
-                print(f'Successfully installed {file_name}')
-            else:
-                logging.debug(f'Failed to download file: %s', (file_name))
-                print(f'Failed to download file: {response_package.status_code}')
+            install_file(file_name, version, install_dir)
+
+        print(f'\n{package_name} has successfully been installed. \
+              Restart Niagara to load package.')
+        
     else:
         logging.debug('Package not found, running fuzy search.')
+        # Run fuzzy search for package suggestions
         fuzzy_search(package_name, manifest.keys())
-        
-
-
 
 
 def add_install_parser(subparsers: _SubParsersAction) -> ArgumentParser:
@@ -78,5 +84,5 @@ def add_install_parser(subparsers: _SubParsersAction) -> ArgumentParser:
         description='Install specified package')
     parser_install.add_argument('--niagara-version', type=str, metavar='<MAJOR.MINOR>', help='Override the version of niagara')
     parser_install.add_argument('package_name', type=str, help='Name of package to be installed')
-    parser_install.set_defaults(func=install_package)
+    parser_install.set_defaults(func=install_package_command)
     return parser_install
