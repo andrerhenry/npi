@@ -11,6 +11,7 @@ authors = [
 requires-python = ">=3.10"
 dependencies = [
     "jproperties>=2.1.2",
+    "pytest-mock>=3.14.0",
     "rapidfuzz>=3.12.2",
     "requests>=2.32.3",
     "setuptools>=75.8.2",
