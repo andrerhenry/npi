@@ -5,16 +5,17 @@ from pathlib import Path
 from pytest_mock import mocker
 
 from npi.install import install_file
+from tests.conftest import MockPackageResponse
 
 @pytest.fixture
 def mock_file_request():
     content = 'Some Content for tests.'
     content_in_bytes = content.encode('utf-8')
-    mock_response = {'status_code': 200, 'content': content_in_bytes}
-
+    #mock_response = {'status_code': 200, 'content': content_in_bytes}
+    mock_response = MockPackageResponse(200, content)
     return mock_response
 
-def test_install_file(tmp_path, mock_file_request):
+def test_install_file(tmp_path):
     file_name = 'vykonPro-rt.jar'
     version = '4.13'
     test_install_path = Path(__file__).parent/'resources'/'mock_install'/'EC-Net4-4.13.0.186'/'modules'
@@ -33,10 +34,10 @@ def test_install_file_with_mock(tmp_path, monkeypatch, mock_file_request, mocker
     version = '4.13'
     test_install_path = tmp_path
 
-    def mock_get(*args, **kwargs):
-        return mock_file_request()
+    # def mock_get(*args, **kwargs):
+    #     return mock_file_request()
     
-    mocker.patch('requests.get', mock_file_request)
+    mocker.patch('requests.get',return_value = mock_file_request())
     # monkeypatch.setattr(requests, 'get', mock_get())
 
     # test_install_path = Path(__file__)/'resources'/'EC-Net4-4.13.0.186'/'modules'
