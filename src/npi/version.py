@@ -97,7 +97,6 @@ def set_version_from_properties_file(version_data: Properties) -> NiagaraVersion
         int(version_data.get('version.iteration').data),
         int(version_data.get('version.build').data)
     )
-    print(version)
     return version
 
 

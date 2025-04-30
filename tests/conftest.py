@@ -1,6 +1,26 @@
 import pytest
 
+from argparse import ArgumentParser
+from pathlib import Path
+
+from npi.main import build_parser
 from npi.search import get_manifest
+
+
+@pytest.fixture
+def main_parser_fixture():
+        return build_parser()
+
+@pytest.fixture
+def set_enviro_distech_4_13(monkeypatch: pytest.MonkeyPatch):
+    base_path = Path(__file__).parent
+    monkeypatch.chdir(base_path/"resources"/"mock_install"/"EC-Net4-4.13.0.186")
+
+@pytest.fixture
+def set_enviro_vykon_4_14(monkeypatch: pytest.MonkeyPatch):
+    base_path = Path(__file__).parent
+    monkeypatch.chdir(base_path/"resources"/"mock_install"/"Niagara-4.14.0.162")
+
 
 @pytest.fixture
 def mock_get_manifest():
