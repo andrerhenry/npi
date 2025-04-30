@@ -86,7 +86,7 @@ def search_package_repo(package_name: str, version: str) -> str | None:
     """
     package_list = get_manifest(version).keys()
     if package_name in package_list:
-        print(f'Package {package_name} is availbe for install.')
+        print(f'Package {package_name} is available for install.')
         return package_name
     else:
         return fuzzy_search(package_name, package_list)
@@ -143,7 +143,7 @@ def add_search_parsers(subparsers: _SubParsersAction) -> ArgumentParser:
     parser_search.set_defaults(func=search_command)
 
     group = parser_search.add_mutually_exclusive_group()
-    group.add_argument('--niagara-version', type=str, metavar='<MAJOR.MINOR>', help='Override the version of niagara in search.')
-    group.add_argument('--local', action='store_true', help='Changes search to search local packages.')
+    group.add_argument('-nv', '--niagara-version', type=str, metavar='<MAJOR.MINOR>', help='Override the version of niagara in search.')
+    group.add_argument('-l', '--local', action='store_true', help='Changes search to search local packages.')
     return parser_search
 
