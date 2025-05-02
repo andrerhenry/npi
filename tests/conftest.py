@@ -1,6 +1,5 @@
 import pytest
 import shutil
-import os
 
 from argparse import ArgumentParser
 from pathlib import Path
@@ -31,12 +30,16 @@ def mock_distech_file_struc(tmp_path, hmock_file_request, monkeypatch):
 @pytest.fixture
 def set_enviro_distech_4_13(monkeypatch: pytest.MonkeyPatch):
     base_path = Path(__file__).parent
-    monkeypatch.chdir(base_path/'resources'/'mock_install'/'EC-Net4-4.13.0.186')
+    enviro_path = base_path/'resources'/'mock_install'/'EC-Net4-4.13.0.186'
+    monkeypatch.chdir(enviro_path)
+    return enviro_path
 
 @pytest.fixture
 def set_enviro_vykon_4_14(monkeypatch: pytest.MonkeyPatch):
     base_path = Path(__file__).parent
-    monkeypatch.chdir(base_path/'resources'/'mock_install'/'Niagara-4.14.0.162')
+    enviro_path = base_path/'resources'/'mock_install'/'Niagara-4.14.0.162'
+    monkeypatch.chdir(enviro_path)
+    return enviro_path
 
 
 @pytest.fixture
