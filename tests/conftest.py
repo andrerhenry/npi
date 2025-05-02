@@ -14,22 +14,18 @@ def main_parser_fixture():
         return build_parser()
 
 
-@pytest.fixture(autouse=True)
-def create_defualt_testing_enviro(tmp_path, monkeypatch):
-    print(os.getcwd())
+@pytest.fixture()
+def mock_distech_file_struc(tmp_path, hmock_file_request, monkeypatch):
+    """ Creates a mock Niagara files structure for tests.
+    The defulat is set to a Distech 4.13.
+
+    """    
     base_path = Path(__file__).parent
     mock_niagara = 'EC-Net4-4.13.0.186'
     source_enviro_path = base_path/'resources'/'mock_install'/ mock_niagara
-    print(source_enviro_path)
-    # shutil.copytree(source_enviro_path, tmp_path)
-    monkeypatch.chdir(source_enviro_path)
-    print(os.getcwd())
-    # monkeypatch.chdir(tmp_path/mock_niagara)
-    # os.chdir(tmp_path/mock_niagara)
-    pass
 
-def test_set_path_fixture(create_defualt_testing_enviro):
-     assert os.getcwd() == '/mnt/drive/Projects/npi/tests/resources/mock_install/EC-Net4-4.13.0.186'
+    shutil.copytree(source_enviro_path, tmp_path/mock_niagara)
+    monkeypatch.chdir(tmp_path/mock_niagara)
      
     
 @pytest.fixture
@@ -44,7 +40,7 @@ def set_enviro_vykon_4_14(monkeypatch: pytest.MonkeyPatch):
 
 
 @pytest.fixture
-def mock_get_manifest():
+def mock_get_manifest(monkeypatch):
     mock_manifest_data = '''
     {
     'vykonPro': {
@@ -75,14 +71,17 @@ def mock_get_manifest():
     }
     }'''
 
-    pytest.MonkeyPatch.setattr(get_manifest, mock_manifest_data)
-
-
-    content = 'Some Content for tests.'
-    content_in_bytes = content.encode('utf-8')
+    mock_manifest_data = 'Some Content for tests.'
+    content_in_bytes = mock_manifest_data.encode('utf-8')
     mock_response = {'status_code': 200, 'content': content_in_bytes}
+    return mock_response
 
-class MockPackageResponse:
-    def __init__(self, status_code:int, content:str):
-        self.status_code = status_code
-        self.content = content.encode('utf-8')
+
+@pytest.fixture
+def mock_file_request():
+    class MockPackageResponse:
+        def __init__(self, url):
+            self.status_code = 200
+            self.content = ('Some Content for tests.').encode('utf-8')
+
+    return MockPackageResponse
