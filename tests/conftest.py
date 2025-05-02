@@ -1,4 +1,6 @@
 import pytest
+import shutil
+import os
 
 from argparse import ArgumentParser
 from pathlib import Path
@@ -11,48 +13,67 @@ from npi.search import get_manifest
 def main_parser_fixture():
         return build_parser()
 
+
+@pytest.fixture(autouse=True)
+def create_defualt_testing_enviro(tmp_path, monkeypatch):
+    print(os.getcwd())
+    base_path = Path(__file__).parent
+    mock_niagara = 'EC-Net4-4.13.0.186'
+    source_enviro_path = base_path/'resources'/'mock_install'/ mock_niagara
+    print(source_enviro_path)
+    # shutil.copytree(source_enviro_path, tmp_path)
+    monkeypatch.chdir(source_enviro_path)
+    print(os.getcwd())
+    # monkeypatch.chdir(tmp_path/mock_niagara)
+    # os.chdir(tmp_path/mock_niagara)
+    pass
+
+def test_set_path_fixture(create_defualt_testing_enviro):
+     assert os.getcwd() == '/mnt/drive/Projects/npi/tests/resources/mock_install/EC-Net4-4.13.0.186'
+     
+    
 @pytest.fixture
 def set_enviro_distech_4_13(monkeypatch: pytest.MonkeyPatch):
     base_path = Path(__file__).parent
-    monkeypatch.chdir(base_path/"resources"/"mock_install"/"EC-Net4-4.13.0.186")
+    monkeypatch.chdir(base_path/'resources'/'mock_install'/'EC-Net4-4.13.0.186')
 
 @pytest.fixture
 def set_enviro_vykon_4_14(monkeypatch: pytest.MonkeyPatch):
     base_path = Path(__file__).parent
-    monkeypatch.chdir(base_path/"resources"/"mock_install"/"Niagara-4.14.0.162")
+    monkeypatch.chdir(base_path/'resources'/'mock_install'/'Niagara-4.14.0.162')
 
 
 @pytest.fixture
 def mock_get_manifest():
-    mock_manifest_data = """
+    mock_manifest_data = '''
     {
-    "vykonPro": {
-        "files": [
-        "vykonPro-ux.jar",
-        "vykonPro-rt.jar",
-        "vykonPro-doc.jar",
-        "vykonPro-wb.jar"
+    'vykonPro': {
+        'files': [
+        'vykonPro-ux.jar',
+        'vykonPro-rt.jar',
+        'vykonPro-doc.jar',
+        'vykonPro-wb.jar'
         ],
-        "runtimeProfiles": [
-        "ux",
-        "rt",
-        "doc",
-        "wb"
+        'runtimeProfiles': [
+        'ux',
+        'rt',
+        'doc',
+        'wb'
         ]
     },
-    "vykonProUtil": {
-        "files": [
-        "vykonProUtil-doc.jar",
-        "vykonProUtil-rt.jar",
-        "vykonProUtil-wb.jar"
+    'vykonProUtil': {
+        'files': [
+        'vykonProUtil-doc.jar',
+        'vykonProUtil-rt.jar',
+        'vykonProUtil-wb.jar'
         ],
-        "runtimeProfiles": [
-        "doc",
-        "rt",
-        "wb"
+        'runtimeProfiles': [
+        'doc',
+        'rt',
+        'wb'
         ]
     }
-    }"""
+    }'''
 
     pytest.MonkeyPatch.setattr(get_manifest, mock_manifest_data)
 
