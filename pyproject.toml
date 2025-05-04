@@ -1,6 +1,6 @@
 [project]
 name = "npi"
-version = "0.3.4"
+version = "0.3.5"
 description = "npi help you install and manage packages for the Niagara systems."
 keywords = ["BAS", "Niagara", "Tridium","package", "manager", "building", "HVAC", "control", "air", "hydronic", "Engineering"]
 classifiers = ["Development Status :: 2 - Pre-Alpha", "Topic :: Scientific/Engineering"]
