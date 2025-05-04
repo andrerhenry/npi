@@ -1,6 +1,7 @@
 # Niagara Package Installer (npi)
 
 **Niagara Package Installer** (npi) is a lightweight CLI tool that helps you easily install and manage Niagara Framework software packages from the [Niagara Package Repository ](http://18.119.133.195/).
+`npi` commands can be run in your Niagara console, seamlessly integrating into your system. 
 
 ---
 
@@ -18,7 +19,7 @@
 
 Make sure you have the following installed:
 
-- [PowerShell 7 (pwsh7)](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
+- [PowerShell 7 (pwsh7)](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell) or equivalent shell
 - [Git](https://git-scm.com/downloads)
 - [uv (by astral-sh)](https://astral.sh/blog/uv-the-python-pkg-manager/)
 
@@ -46,6 +47,13 @@ uv tool update-shell
 
 Once installed and the shell is restarted, `npi` should be available in your terminal.
 
+---
+
+To update npi with the latest updates and features:
+
+```pwsh
+uv tool update npi
+```
 ---
 
 ## 🔧 Basic Usage
@@ -103,4 +111,4 @@ can use them.
 - Niagara Package Repository : http://18.119.133.195/
 ---
 
-Crafted with ❤️ for building smarter building automation tools.
+
