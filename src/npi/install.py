@@ -1,12 +1,13 @@
 import requests
-import json
 import logging
+
+from pathlib import Path
 from dataclasses import dataclass
 from argparse import _SubParsersAction, ArgumentParser
 from yarl import URL
 
-from .version import get_install_dir, check_verison_override
-from .search import get_manifest, fuzzy_search
+from npi.version import get_install_dir, check_verison_override
+from npi.search import get_manifest, fuzzy_search
 
 logger = logging.getLogger(__name__)
 
@@ -21,9 +22,11 @@ class InstallArgs:
     Attributes:
         package_name (str): Name of package to be installed
         niagara_version (str): Optional argument for version override
+        path_override(str): Optional argument for install target direcotry
     """
     package_name: str
     niagara_version: str
+    path_override: str
 
 
 def install_file(file_name: str, version: str, install_dir: str) -> None:
@@ -39,6 +42,21 @@ def install_file(file_name: str, version: str, install_dir: str) -> None:
         print(f'Failed to download file: {response_package.status_code}')
 
 
+def check_path_override(path_override:str | Path | None)-> str:
+    """Checks the override for target install path, if none was provided it will return the defualt path.
+
+    Args:
+        path_override (str | None): Optional path override from argument parser.
+
+    Returns:
+        str: Target install path.
+    """
+    if path_override:
+        target_path = path_override
+    else:
+        target_path = get_install_dir()
+    return Path(target_path)
+
 
 def install_package_command(args: InstallArgs):
     """Installed the specified package from the repoistory.
@@ -49,7 +67,7 @@ def install_package_command(args: InstallArgs):
 
     package_name = args.package_name
     version = check_verison_override(args.niagara_version)
-    install_dir = get_install_dir()
+    install_dir = check_path_override(args.path_override)
     manifest = get_manifest(version)
 
     logging.debug('URL with args: %s', (REPO_URL/version/package_name))
@@ -61,7 +79,7 @@ def install_package_command(args: InstallArgs):
             install_file(file_name, version, install_dir)
 
         print(f'\n{package_name} has successfully been installed. \
-              Restart Niagara to load package.')
+              \nRestart Niagara to load package.')
         
     else:
         logging.debug('Package not found, running fuzy search.')
@@ -84,5 +102,6 @@ def add_install_parser(subparsers: _SubParsersAction) -> ArgumentParser:
         description='Install specified package')
     parser_install.add_argument('--niagara-version', type=str, metavar='<MAJOR.MINOR>', help='Override the version of niagara')
     parser_install.add_argument('package_name', type=str, help='Name of package to be installed')
+    parser_install.add_argument('--path', dest='path_override', type=str, help='Override the installation install directory')
     parser_install.set_defaults(func=install_package_command)
     return parser_install
