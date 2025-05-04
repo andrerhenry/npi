@@ -14,7 +14,7 @@ def main_parser_fixture():
 
 
 @pytest.fixture()
-def mock_distech_file_struc(tmp_path, hmock_file_request, monkeypatch):
+def mock_distech_file_struc(tmp_path, monkeypatch):
     """ Creates a mock Niagara files structure for tests.
     The defulat is set to a Distech 4.13.
 
@@ -43,7 +43,7 @@ def set_enviro_vykon_4_14(monkeypatch: pytest.MonkeyPatch):
 
 
 @pytest.fixture
-def mock_get_manifest(monkeypatch):
+def mock_get_manifest():
     mock_manifest_data = '''
     {
     'vykonPro': {
