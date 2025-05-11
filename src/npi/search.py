@@ -9,8 +9,8 @@ from collections.abc import Iterable
 from rapidfuzz import fuzz, process
 from yarl import URL
 
-from .version import get_niagara_path, check_verison_override
-from .errors import GetPackageManifestError
+from npi.version import get_niagara_path, check_verison_override
+from npi.errors import GetPackageManifestError
 
 logger = logging.getLogger(__name__)
 

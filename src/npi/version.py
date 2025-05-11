@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from jproperties import Properties
 
-from .errors import NiagaraSystemDetectionError
+from npi.errors import NiagaraSystemDetectionError
 
 logger = logging.getLogger(__name__)
 

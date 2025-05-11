@@ -2,7 +2,7 @@ import os
 from argparse import _SubParsersAction, ArgumentParser
 from collections.abc import Mapping
 
-from .version import get_install_dir
+from npi.version import get_install_dir
 
 def list_modules_local(args) -> list[str]:
     """Returns and prints the modules installed in the Niagara modules direcotry.

@@ -2,6 +2,7 @@ import requests
 import logging
 
 from pathlib import Path
+from os import PathLike
 from dataclasses import dataclass
 from argparse import _SubParsersAction, ArgumentParser
 from yarl import URL
@@ -22,18 +23,25 @@ class InstallArgs:
     Attributes:
         package_name (str): Name of package to be installed
         niagara_version (str): Optional argument for version override
-        path_override(str): Optional argument for install target direcotry
+        path_override(PathLike): Optional argument for install target direcotry
     """
     package_name: str
     niagara_version: str
-    path_override: str
+    path_override: PathLike
 
 
-def install_file(file_name: str, version: str, install_dir: str) -> None:
+def install_file(file_name: str, version: str, install_dir: PathLike) -> None:
+    """Makes request for file and stores file at input directory
+
+    Args:
+        file_name (str): Name of file to download.
+        version (str): Version of file.
+        install_dir (PathLike): Destination file location.
+    """    
     response_package = requests.get(REPO_URL/version/file_name)
     
     if response_package.status_code == 200:
-        with open(install_dir/file_name, 'wb') as file:
+        with open(Path(install_dir)/file_name, 'wb') as file:
             file.write(response_package.content)
         logging.debug(f'Successfully installed: %s', (file_name))
         print(f'Successfully installed {file_name}')
@@ -42,14 +50,14 @@ def install_file(file_name: str, version: str, install_dir: str) -> None:
         print(f'Failed to download file: {response_package.status_code}')
 
 
-def check_path_override(path_override:str | Path | None)-> str:
+def check_path_override(path_override:PathLike | None)-> PathLike:
     """Checks the override for target install path, if none was provided it will return the defualt path.
 
     Args:
-        path_override (str | None): Optional path override from argument parser.
+        path_override (PathLike | None): Optional path override from argument parser.
 
     Returns:
-        str: Target install path.
+        PathLike: Target install path.
     """
     if path_override:
         target_path = path_override
