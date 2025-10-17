@@ -11,7 +11,7 @@ from .search import get_manifest, fuzzy_search
 logger = logging.getLogger(__name__)
 
 global REPO_URL
-REPO_URL = URL('http://18.119.133.195/niagara/')
+REPO_URL = URL('http://3.148.74.140/niagara/')
 
 
 @dataclass
