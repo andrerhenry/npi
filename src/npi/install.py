@@ -27,6 +27,7 @@ class InstallArgs:
 
 
 def install_file(file_name: str, version: str, install_dir: str) -> None:
+    print(REPO_URL/version/file_name)
     response_package = requests.get(REPO_URL/version/file_name)
     
     if response_package.status_code == 200:
